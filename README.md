@@ -2,4 +2,6 @@
 ***Project of Group Lam, Cuong, Mai***
 
 ## 1. Database
-![example](static/images/pic04.jpg)
+![example](images in README/database.png)
+
+## 2. OOP
