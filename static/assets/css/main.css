@@ -3163,10 +3163,10 @@
 	#banner {
 		background-attachment: scroll,							fixed;
 		background-color: #666;
-		background-image: url("images/overlay.png"), url("../../images/banner1.png");
-		background-position: top left,						center center;
-		background-repeat: repeat,							no-repeat;
-		background-size: auto,							cover;
+		background-image: url("images/overlay.png"), url("../../images/img.png");
+		background-position: top left, center center;
+		background-repeat: repeat, no-repeat;
+		background-size: auto, cover;
 		color: #fff;
 		padding: 12em 0 20em 0;
 		text-align: center;
@@ -3177,7 +3177,7 @@
 		}
 
 		#banner h2, #banner h3, #banner h4, #banner h5, #banner h6 {
-			color: #fff;
+			color: white;
 		}
 
 		#banner h2 {
