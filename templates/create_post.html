@@ -10,6 +10,13 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../static/assets/css/main.css" />
+        <script src="../tinymce/js/tinymce/tinymce.min.js"></script>
+		<script>
+			tinymce.init({
+				selector: "#textEditor",
+				height: 400
+			});
+		</script>
 	</head>
 	<body class="landing is-preload">
 		<div id="page-wrapper">
@@ -29,9 +36,8 @@
 				</header>
 
 			<!-- Banner -->
-				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1661375/pexels-photo-1661375.jpeg?auto=compress&cs=tinysrgb&w=1300');">
-					<h2><b style="color: white;">Register</b></h2>
-					<h2><b style="color: black;">Start Contributing to the Blog!</b></h2>
+				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
+					<h2><b style="color: white;">Create Blog</b></h2>
 				</section>
 
 			<!-- Main -->
@@ -40,29 +46,21 @@
 					<section class="box special">
                         <!-- Form -->
                         <section class="box">
-                            <h3>Register Form</h3>
+                            <h3>Blog Form</h3>
                             <form method="post" action="#">
                                 <div class="row gtr-uniform gtr-50">
                                     <div class="col-12 col-12-mobilep">
-                                        <input type="text" name="name" id="name" value="" placeholder="Name" />
+                                        <input type="text" name="title" id="title" value="" placeholder="Title" />
                                     </div>
                                     <div class="col-12 col-12-mobilep">
-                                        <input type="email" name="email" id="email" value="" placeholder="Example@email.com" />
-                                    </div>
-                                    <div class="col-12 col-12-mobilep">
-                                        <input type="password" name="password" id="password" value="" placeholder="Password" />
+                                        <input type="text" name="subtitle" id="subtitle" value="" placeholder="Subtitle" />
                                     </div>
 									<div class="col-12 col-12-mobilep">
                                         <input type="text" name="image-cover" id="image-cover" value="" placeholder="Image cover link" />
                                     </div>
-									<div class="col-6 col-12-mobilep" style="text-align: left;">
-                                        <p>Choose a profile picture:</p>
-                                    </div>
-									<div class="col-6 col-12-mobilep" style="text-align: left;">
-                                        <input type="file" name="avatar" id="avatar" value="" placeholder="Avatar link" />
-                                    </div>
-									<div class="col-12 col-12-mobilep">
-										<textarea name="biography" id="biography" value="" placeholder="Biography" rows="6"></textarea>
+                                    <h3>Body</h3>
+                                    <div class="col-12 col-12-mobilep wrapper">
+                                        <textarea id="textEditor"></textarea>
                                     </div>
                                     <div class="col-12">
                                         <ul class="actions">

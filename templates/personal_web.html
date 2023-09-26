@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Blog</title>
+		<title>Blog - {{ }}</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../static/assets/css/main.css" />
@@ -29,44 +29,61 @@
 				</header>
 
 			<!-- Banner -->
-				<section id="banner">
-					<h2><b style="color: white;">Welcome to our Blog</b></h2>
-					<p><b style="color: white;">"Let's create something unique."</b></p>
-					<ul class="actions special">
-						<li><a href="log_in.html" class="button primary">Log In</a></li>
-						<li><a href="sign_up.html" class="button">Sign Up</a></li>
-					</ul>
+				<section id="banner" style="background-image: url();">
+					<h2><b style="color: white;">{{ }}'s Blog</b></h2>
 				</section>
 
 			<!-- Main -->
-				<section id="main" class="container">
-
+				<section class="container" id="bio">
 					<section class="box special">
 						<header class="major">
-							<h2>All Blogs</h2>
+							<h2>Introduction</h2>
 						</header>
 					</section>
-				<!--Blog-->
-					<div style="margin: 10%">
-					  <a href="#">
-						<h2>
-						  Title
-						</h2>
-						<h3>
-						  Subtitle
-						</h3>
-					  </a>
-					  <i>Posted by
-						<a href="#">name</a>
-						on date
-					  </i>
+					<div class="row">
+						<div class="col-6 col-6-narrower col-12-mobilep">
+							<img src="../avatar/test.jpeg" width="70%" height="auto" style="position: relative;">
+						</div>
+						<div>
+							<ul>
+								<li><p><b>Name: </b> {{ }}</p></li>
+								<li><p><b>Email: </b> {{ }}</p></li>
+								<li><p><b>Biography: </b> {{ }}</p></li>
+							</ul>
+						</div>
+					</div>
+				</section>
+			    <hr>
+			<!--Blog-->
+				<section id="main" class="container">
+					<section class="box special">
+						<header class="major">
+							<h2>All {{ }}'s Blogs</h2>
+						</header>
+					</section>
+					<div style="margin: 0%">
+					  <!-- Table -->
+						<section class="box">
+							<div class="table-wrapper">
+								<table>
+									<thead>
+										<tr>
+											<th>Title</th>
+											<th>Delete</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Something</td>
+											<td><a hef="#">✘</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
 					</div>
 					<hr>
-					 <div class="col-12" style="margin: 0 0 0 10%">
-						<ul class="actions">
-							<li><a href="create_post.html" class="button special">Create Post</a></li>
-						</ul>
-					 </div>
+
 				</section>
 
 			<!-- Footer -->

@@ -2442,6 +2442,14 @@
 			}
 
 /* Image */
+    .avatar {
+        border-radius: 100%;
+        display: block;
+		position: relative;
+		padding: 0 1em 1em 0;
+		max-width: 10%;
+		height: auto;
+    }
 
 	.image {
 		border-radius: 6px;
@@ -3226,7 +3234,7 @@
 
 /* Main */
 
-	#main {
+	#main, #bio {
 		padding: 4em 0;
 	}
 
