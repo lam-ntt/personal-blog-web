@@ -16,12 +16,18 @@
 
 			<!-- Header -->
 				<header id="header" class="alt">
-					<h1><a href="index.html">Alpha</a> by HTML5 UP</h1>
+					<nav style="left: 0.75em; right: auto;">
+						<ul>
+							<li>
+								<a><img src="../avatar/test.jpeg" class="avatar"></a>
+							</li>
+						</ul>
+					</nav>
 					<nav id="nav">
 						<ul>
 							<li><a href="index.html">Home</a></li>
 							<li>
-								<a href="contact.html" class="icon solid">Contact</a>
+								<a href="personal_web.html" class="icon solid">Info</a>
 							</li>
 							<li><a href="#" class="button">Log Out</a></li>
 						</ul>
@@ -59,14 +65,34 @@
 							<div class="wrapper">
 								<textarea name="comment" placeholder="Comment" rows="6"></textarea>
 							</div>
-							 <div class="col-12">
+							 <div class="col-12" style="margin: 3% 0;">
 								<ul class="actions">
 									<li><input type="submit" value="Submit" /></li>
 									<li><input type="reset" value="Reset" class="alt" /></li>
 								</ul>
 							</div>
 						</form>
-
+					</div>
+					<hr>
+<!--					All comments about the post-->
+					<div class="container text-left row-gap-3">
+						<div>
+							<div class="row">
+								<div class="col-2">
+									<img src="../avatar/test.jpeg" class="avatar" align="right">
+								</div>
+								<div class="col-8">
+									<h3>{{ name }}</h3>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-2">
+								</div>
+								<div class="col-8">
+									<p>{{ something }}</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</section>
 

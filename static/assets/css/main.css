@@ -2445,13 +2445,11 @@
     .avatar {
         border-radius: 100%;
         display: block;
-		position: relative;
 		object-fit: cover;
 		object-position: center;
 		left: 0.75em;
-		margin: 0.5em;
-		height: 50px;
-		width: 50px;
+		height: 45px;
+		width: 45px;
 		outline: 0;
     }
 
