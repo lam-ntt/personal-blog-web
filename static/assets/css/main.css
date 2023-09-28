@@ -2446,9 +2446,13 @@
         border-radius: 100%;
         display: block;
 		position: relative;
-		padding: 0 1em 1em 0;
-		max-width: 10%;
-		height: auto;
+		object-fit: cover;
+		object-position: center;
+		left: 0.75em;
+		margin: 0.5em;
+		height: 50px;
+		width: 50px;
+		outline: 0;
     }
 
 	.image {
