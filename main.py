@@ -25,6 +25,7 @@ class User(db.Model):
     avatar = db.Column(db.String(1014))
     rank_id = db.Column(db.Integer)
     user_rela = db.relationship('States', backref=db.backref('user', lazy=True))
+    image_cover = db.Column(db.String(1014))
 
     def __init__(self, user_name, email, password, bio, avatar=0, rank_id=2):
         self.user_name = user_name
@@ -43,7 +44,7 @@ class States(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     blog_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'))
     comment = db.Column(db.Text)
-
+    is_author = db.Column(db.Boolean, nullable=False)
 
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
