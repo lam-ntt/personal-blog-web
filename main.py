@@ -23,17 +23,18 @@ class User(db.Model):
     password = db.Column(db.String(300), nullable=False)
     bio = db.Column(db.String(100))
     avatar = db.Column(db.String(1014))
+    image_cover = db.Column(db.String(1014))
     rank_id = db.Column(db.Integer)
     user_rela = db.relationship('States', backref=db.backref('user', lazy=True))
-    image_cover = db.Column(db.String(1014))
 
-    def __init__(self, user_name, email, password, bio, avatar=0, rank_id=2):
+    def __init__(self, user_name, email, password, bio, avatar="../avatar/default.png", rank_id=2, image_cover="../static/images/img.png"):
         self.user_name = user_name
         self.email = email
         self.password = generate_password_hash(password)
         self.bio = bio
         self.avatar = avatar
         self.rank_id = rank_id
+        self.image_cover = image_cover
 
     def check_password(self, password_hash):
         return check_password_hash(self.password, password_hash)
@@ -42,9 +43,10 @@ class User(db.Model):
 class States(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    is_author = db.Column(db.Boolean, nullable=False)
     blog_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'))
     comment = db.Column(db.Text)
-    is_author = db.Column(db.Boolean, nullable=False)
+
 
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
