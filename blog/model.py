@@ -16,7 +16,7 @@ class User(db.Model):
     user_rela = db.relationship('State', backref=db.backref('user', lazy=True))
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+        return f"User('{self.username}', '{self.email}', '{self.avatar}')"
 
 
 class State(db.Model):
@@ -33,8 +33,8 @@ class Post(db.Model):
     title = db.Column(db.String(1014), nullable=False)
     content = db.Column(db.Text, nullable=False)
     image_cover = db.Column(db.String(1014), default="../static/images/img.png")
-    post_rela = db.relationship('State', backref=db.backref('Post', lazy=True))
+    post_rela = db.relationship('State', backref=db.backref('post', lazy=True))
 
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
+        return f"Post('{self.title}', '{self.date}')"
 
