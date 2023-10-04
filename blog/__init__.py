@@ -12,3 +12,4 @@ app.permanent_session_lifetime = timedelta(minutes=1)
 app.app_context().push()
 db = SQLAlchemy(app)
 
+from blog import route

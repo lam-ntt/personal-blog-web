@@ -6,13 +6,13 @@ from blog import db
 class User(db.Model):
     # _tablename_ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), nullable=False)
-    username = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     bio = db.Column(db.String(100))
     avatar = db.Column(db.String(1014), default="../avatar/default.png")
     image_cover = db.Column(db.String(1014), default="../static/images/img.png")
-    rank_id = db.Column(db.Integer, default=2)
+    rank_id = db.Column(db.Integer, default=2) # except admin, rank_id=1
     user_rela = db.relationship('State', backref=db.backref('user', lazy=True))
 
     def __repr__(self):
@@ -22,8 +22,8 @@ class User(db.Model):
 class State(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     is_author = db.Column(db.Boolean, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    blog_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    blog_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     comment = db.Column(db.Text)
 
 
