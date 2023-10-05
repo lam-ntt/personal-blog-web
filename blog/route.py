@@ -12,12 +12,20 @@ def index():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date.desc()).paginate(page=page, per_page=5)
     return render_template('index.html', posts=posts)
-    pass
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    pass
+    form = SignupForm()
+    if form.validate_on_submit():
+        hash_password = bcrypt.generate_password_hash(form.password.data)
+        user = User(email=form.email.data, username=form.username.data, password=hash_password)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your account has been created. You are now able to login')
+        return redirect(url_for('login'))
+    return render_template('sign_up.html', form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -29,7 +37,7 @@ def logout():
 
 @app.route('/account', methods=['GET', 'POST'])
 def account():
-    pass
+     pass
 
 
 @app.route('/post/new', methods=['GET', 'POST'])
