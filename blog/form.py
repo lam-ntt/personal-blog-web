@@ -61,8 +61,20 @@ class CommentForm(FlaskForm):
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
     
+class RequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request')
 
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            if user.email == current_user.email: return
+            else: raise ValidationError('This email is not linked to any account. Please register first')
 
+class ResetForm(FlaskForm):
+    password = StringField('Password', validators=[DataRequired()])
+    confirm_password = StringField('Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Signup')
 
 
 

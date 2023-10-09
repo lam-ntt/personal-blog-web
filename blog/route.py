@@ -2,18 +2,14 @@ import os, secrets # image processing
 
 from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_mail import Message
 
 from blog import app, db, bcrypt
 from blog.model import User, Post, State
-from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm
+from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
 
 
 
-# Taskbar trước khi đăng nhập có Home, Signin, Login
-# Taskbar sau khi đăng nhập có Home, Create, Logout
-
-
-# Hiển thị các bài đăng
 @app.route('/')
 @app.route('/index')
 def index():
@@ -22,7 +18,12 @@ def index():
     return render_template('index.html', posts=posts)
 
 
-# Thông tin các trường trong phần SignupForm
+@app.route('/admin')
+def admin():
+    posts = Post.query.order_by(Post.date.desc()).all()
+    return render_template('admin.html', posts=posts)
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
@@ -36,7 +37,6 @@ def signup():
     return render_template('sign_up.html', form=form)
 
 
-# Thông tin các trường trong phần LoginForm
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -68,8 +68,6 @@ def save_picture(form_picture, pos):
     return picture_fn
 
 
-# Phần account, bên trên sẽ hiển thị ảnh avatar, image_cover, thông tin cá nhân,
-# bên dưới thì hiển thị UpdateAccountForm để thay đổi thông tin 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
@@ -86,14 +84,13 @@ def account():
         flash('You account info has been updated!')
         return redirect(url_for('account'))
     else:
-        # Hien thi thong in cu cua tai khoan
+        # Hien thi thong tin cu cua tai khoan
         pass
     avatar_file = url_for('avatar', filename=current_user.avatar)
     image_cover_file = url_for('image_cover', filename=current_user.image_cover)
-    return render_template('account.html', form=form, avatar_file=avatar_file, image_cover_file=image_cover_file)
+    return render_template('account.html', form=form, avatar_file=avatar_file,image_cover_file=image_cover_file)
 
 
-# Thông tin các trường trong PostForm
 @app.route('/post/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -109,9 +106,6 @@ def new_post():
     return render_template('new_post.html', form=form)
 
 
-# Phần Post, bên trên hiển thị thông tin bài post,
-# bên dưới hiển thị 2 nút bấm là update và delete dẫn đến 2 phần tương ứng, 
-# dưới cùng hiển thị CommentForm để bình luận và các bình luận đã có sẵn
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 @login_required
 def post(post_id):
@@ -128,7 +122,6 @@ def post(post_id):
     return render_template('post.html', post=post)
 
 
-# Thông tin các trường cũng lấy trong PostForm
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
@@ -145,7 +138,7 @@ def update_post(post_id):
         flash('Your post has been updated!')
         return redirect(url_for('post', post_id=post.id))
     else:
-        # Hien thi thong in cu cua bai dang
+        # Hien thi thong tin cu cua bai dang
         pass
     return render_template('new_post.html', form=form)
 
@@ -167,4 +160,39 @@ def delete_post(post_id):
     return redirect(url_for('home'))
 
 
-# Chưa làm trang admin, hiển thị post trong trang các nhân, reset mật khẩu
+def send_reset_mail(user):
+    token = user.get_reset_token()
+    msg = Message(sender='noreply@demo.com', recipients=[user.email])
+    msg.subject = 'Password Reset Request'
+    msg.body = '''To reset tour password, visit the following link: \n
+    { url_for('reset_password), token=token, _external=True} \n
+    If you did not make this request then simply ignore this email and no change with be made.
+    '''
+    mail.send(msg)
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    form = RequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data)
+        send_reset_mail(user)
+        flash('An email has been sent with instructions to reset your password')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', form=form)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('Invalid token!')
+        return redirect(url_for('reset_request'))
+    form = ResetForm()
+    if form.validate_on_submit():
+        hash_password = bcrypt.generate_password_hash(form.password.data)
+        user.password = hash_password
+        db.session.commit()
+        flash('Your password has been updated. You are now able to login')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)
