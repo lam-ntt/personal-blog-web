@@ -1,7 +1,7 @@
 from datetime import datetime
 from itsdangerous import URLSafeSerializer as Serializer
 
-from blog import db, login_manager
+from blog import db, login_manager, app
 from flask_login import UserMixin
 
 
