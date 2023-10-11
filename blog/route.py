@@ -11,11 +11,11 @@ from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, Commen
 
 
 @app.route('/')
-@app.route('/index')
+@app.route('/home')
 def index():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date.desc()).paginate(page=page, per_page=5)
-    return render_template('index.html', posts=posts)
+    return render_template('home.html', posts=posts)
 
 
 @app.route('/admin')
@@ -52,7 +52,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    login_user()
+    logout_user()
     return redirect(url_for('index'))
 
 
@@ -110,6 +110,13 @@ def new_post():
 @login_required
 def post(post_id):
     post = Post.query.get_or_404(post_id)
+    author_id = State.query.filter_by(is_author=True, post_id=post.id).first()
+    author = User.query.filter_by(id=author_id).first() # a user
+    commenter_id = State.query.filter_by(is_author=False, post_id=post.id)
+    commenter = User.query.filter_by(id in commenter_id) # a list
+    if current_user.id == author.id: is_authen=True
+    else: is_authen=False
+
     form = CommentForm()
     if form.validate_on_submit():
         state = State.query.filter(is_author=True, post_id=post.id).first()
@@ -119,7 +126,8 @@ def post(post_id):
             new_state = State(is_author=False, user_id=current_user.id, post_id=post.id)
         db.session.add(new_state)
         db.session.commit()
-    return render_template('post.html', post=post)
+    return render_template('post.html', post=post, author=author,
+                           commenter=commenter, is_authen=is_authen)
 
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
