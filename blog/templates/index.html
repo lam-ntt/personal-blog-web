@@ -20,17 +20,17 @@
                 <nav style="left: 0.75em; right: auto;">
                     <ul>
                         <li>
-                            <a><img src="../avatar/test.jpeg" class="avatar"></a>
+                            <a><img src="{{ current_user.avatar }}" class="avatar"></a>
                         </li>
                     </ul>
                 </nav>
                 <nav id="nav">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li>
-                            <a href="personal_web.html" class="icon solid">Info</a>
-                        </li>
-                        <li><a href="#" class="button">Log Out</a></li>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        {% if current_user.is_authenticated: %}
+                        <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
+                        <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+                        {% endif %}
                     </ul>
                 </nav>
             </header>
@@ -39,10 +39,12 @@
             <section id="banner">
                 <h2><b style="color: white;">Welcome to our Blog</b></h2>
                 <p><b style="color: white;">"Let's create something unique."</b></p>
+                {% if not current_user.is_authenticated: %}
                 <ul class="actions special">
                     <li><a href="log_in.html" class="button primary">Log In</a></li>
                     <li><a href="sign_up.html" class="button">Sign Up</a></li>
                 </ul>
+                {% endif %}
             </section>
 
 			<!-- Main -->
@@ -54,26 +56,28 @@
                 </section>
 
                 <!--Blog-->
+                {% for post in posts: %}
                 <div style="margin: 10%">
-                    <a href="#">
+                    <a href="{{ url_for('post') }}">
                     <h2>
-                        Title
+                        {{ post.title }}
                     </h2>
-                    <h3>
-                        Subtitle
-                    </h3>
                     </a>
                     <i>Posted by
-                    <a href="#">name</a>
-                    on date
+                    <a href="{{ url_for('account') }}">name</a>
+                    on {{ post.date }}
                     </i>
                 </div>
+                {% endfor %}
+
+                {% if current_user.is_authenticated %}
                 <hr>
                     <div class="col-12" style="margin: 0 0 0 10%">
                     <ul class="actions">
-                        <li><a href="create_post.html" class="button special">Create Post</a></li>
+                        <li><a href="{{ url_for('new_post') }}" class="button special">Create Post</a></li>
                     </ul>
                     </div>
+                {% endif %}
                 </hr>
             </section>
 

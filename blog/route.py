@@ -9,10 +9,14 @@ from blog.model import User, Post, State
 from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
 
 
+# Taskbar trước khi đăng nhập có Home, Signin, Login
+# Taskbar sau khi đăng nhập có Home, Create, Logout
 
+
+# Hiển thị các bài đăng
 @app.route('/')
 @app.route('/home')
-def index():
+def home():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', posts=posts)
@@ -22,7 +26,6 @@ def index():
 def admin():
     posts = Post.query.order_by(Post.date.desc()).all()
     return render_template('admin.html', posts=posts)
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -128,7 +131,7 @@ def post(post_id):
             new_state = State(is_author=False, user_id=current_user.id, post_id=post.id)
         db.session.add(new_state)
         db.session.commit()
-    return render_template('post.html', post=post, author=author,
+    return render_template('post.html',form=form, post=post, author=author,
                            commenter_state=commenter_state, commenter=commenter, is_authen=is_authen)
 
 
