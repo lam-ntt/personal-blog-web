@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_mail import Message
 
-from blog import app, db, bcrypt
+from blog import app, db, bcrypt, mail
 from blog.model import User, Post, State
 from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
 
