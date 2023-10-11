@@ -32,7 +32,7 @@ def signup():
         user = User(email=form.email.data, username=form.username.data, password=hash_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created. You are now able to login.')
+        flash('Your account has been created. You are now able to login.', 'info')
         return redirect(url_for('login'))
     return render_template('sign_up.html', form=form)
 
@@ -46,7 +46,7 @@ def login():
             login_user(user)
             redirect(url_for('index'))
         else:
-            flash('You logged in fail. Please try again!')
+            flash('You logged in fail. Please try again!', 'alert')
     return render_template('log_in.html', form=form)
 
 
@@ -81,7 +81,7 @@ def account():
         if form.image_cover.data:
             current_user.image_cover = save_picture(form.image_cover.data)
         db.session.commit()
-        flash('You account info has been updated!')
+        flash('You account info has been updated!', 'info')
         return redirect(url_for('account'))
     else:
         # Hien thi thong tin cu cua tai khoan
@@ -101,7 +101,7 @@ def new_post():
         db.session.add(post)
         db.session.add(state)
         db.session.commit(post)
-        flash('Your post has been created!')
+        flash('Your post has been created!', 'info')
         return redirect(url_for('index'))
     return render_template('new_post.html', form=form)
 
@@ -135,7 +135,7 @@ def update_post(post_id):
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
-        flash('Your post has been updated!')
+        flash('Your post has been updated!', 'info')
         return redirect(url_for('post', post_id=post.id))
     else:
         # Hien thi thong tin cu cua bai dang
@@ -156,7 +156,7 @@ def delete_post(post_id):
         db.session.delete(state)
     db.session.delete(post)
     db.session.commit()
-    flash('Your post has been deleted!')
+    flash('Your post has been deleted!', 'info')
     return redirect(url_for('home'))
 
 
@@ -164,10 +164,10 @@ def send_reset_mail(user):
     token = user.get_reset_token()
     msg = Message(sender='noreply@demo.com', recipients=[user.email])
     msg.subject = 'Password Reset Request'
-    msg.body = '''To reset tour password, visit the following link: \n
-    { url_for('reset_password), token=token, _external=True} \n
-    If you did not make this request then simply ignore this email and no change with be made.
-    '''
+    msg.body = f'''To reset your password, visit the following link: 
+{ url_for('reset_password', token=token, _external=True) } 
+If you did not make this request then simply ignore this email and no change will be made.
+'''
     mail.send(msg)
 
 
@@ -177,7 +177,7 @@ def reset_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data)
         send_reset_mail(user)
-        flash('An email has been sent with instructions to reset your password')
+        flash('An email has been sent with instructions to reset your password', 'info')
         return redirect(url_for('login'))
     return render_template('reset_request.html', form=form)
 
@@ -186,13 +186,13 @@ def reset_request():
 def reset_password(token):
     user = User.verify_reset_token(token)
     if user is None:
-        flash('Invalid token!')
+        flash('This is an invalid or expired token!', 'alert')
         return redirect(url_for('reset_request'))
     form = ResetForm()
     if form.validate_on_submit():
         hash_password = bcrypt.generate_password_hash(form.password.data)
         user.password = hash_password
         db.session.commit()
-        flash('Your password has been updated. You are now able to login')
+        flash('Your password has been updated. You are now able to login', 'info')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
