@@ -19,7 +19,7 @@ from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, Commen
 def home():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', posts=posts)
+    return render_template('index.html', posts=posts)
 
 
 @app.route('/admin')
@@ -110,7 +110,6 @@ def new_post():
 
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
-@login_required
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     author_state = State.query.filter_by(is_author=True,post_id=post.id).first()

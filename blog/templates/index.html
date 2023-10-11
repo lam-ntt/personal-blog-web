@@ -17,6 +17,7 @@
 			<!-- Header -->
             <header id="header" class="alt">
 
+                {% if current_user.is_authenticated: %}
                 <nav style="left: 0.75em; right: auto;">
                     <ul>
                         <li>
@@ -24,6 +25,7 @@
                         </li>
                     </ul>
                 </nav>
+                {% endif %}
                 <nav id="nav">
                     <ul>
                         <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -41,8 +43,8 @@
                 <p><b style="color: white;">"Let's create something unique."</b></p>
                 {% if not current_user.is_authenticated: %}
                 <ul class="actions special">
-                    <li><a href="log_in.html" class="button primary">Log In</a></li>
-                    <li><a href="sign_up.html" class="button">Sign Up</a></li>
+                    <li><a href="{{ url_for('login') }}" class="button primary">Log In</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="button">Sign Up</a></li>
                 </ul>
                 {% endif %}
             </section>
@@ -58,15 +60,12 @@
                 <!--Blog-->
                 {% for post in posts: %}
                 <div style="margin: 10%">
-                    <a href="{{ url_for('post') }}">
+                    <a href="{{ url_for('post', post_id=post.id) }}">
                     <h2>
                         {{ post.title }}
                     </h2>
                     </a>
-                    <i>Posted by
-                    <a href="{{ url_for('account') }}">name</a>
-                    on {{ post.date }}
-                    </i>
+                    <i>Posted on {{ post.date }}</i>
                 </div>
                 {% endfor %}
 

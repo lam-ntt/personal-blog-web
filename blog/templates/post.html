@@ -4,6 +4,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+{% from 'bootstrap5/form.html' import render_form %}
 <html>
 	<head>
 		<title>Blog - {{ post.title }}</title>
@@ -40,7 +41,7 @@
 					<h2><b style="color: white;">{{ post.title }}</b></h2>
                     <p>
                       <i>Posted by
-                      <a href="#">name</a> on {{ post.date }}
+                      <a href="#">{{ author }}</a> on {{ post.date }}
                       </i>
                     </p>
 					{% if %}
@@ -61,48 +62,54 @@
 					</div>
 
 					<hr>
-
+					{% if is_authen %}
                     <div class="col-12" style="margin: 0 0 0 10%">
                     <ul class="actions">
                         <li><a href="{{ url_for('update_post') }}" class="button special">Update Post</a></li>
                     </ul>
                     </div>
-
                 	</hr>
+					{% endif %}
 				<!--Comment-->
-					<div style="margin: 0% 10% 0% 10%">
-						<h3>Comment</h3>
-						<form method="post" action="#">
-							<div class="wrapper">
-								<textarea name="comment" placeholder="Comment" rows="6"></textarea>
-							</div>
-							 <div class="col-12" style="margin: 3% 0;">
-								<ul class="actions">
-									<li><input type="submit" value="Submit" /></li>
-									<li><input type="reset" value="Reset" class="alt" /></li>
-								</ul>
-							</div>
-						</form>
+					<div class="container">
+						<h1>Comment</h1>
+						{{ render_form(form) }}
 					</div>
+<!--					<div style="margin: 0% 10% 0% 10%">-->
+<!--						<h3>Comment</h3>-->
+<!--						<form method="post" action="#">-->
+<!--							<div class="wrapper">-->
+<!--								<textarea name="comment" placeholder="Comment" rows="6"></textarea>-->
+<!--							</div>-->
+<!--							 <div class="col-12" style="margin: 3% 0;">-->
+<!--								<ul class="actions">-->
+<!--									<li><input type="submit" value="Submit" /></li>-->
+<!--									<li><input type="reset" value="Reset" class="alt" /></li>-->
+<!--								</ul>-->
+<!--							</div>-->
+<!--						</form>-->
+<!--					</div>-->
 					<hr>
 <!--					All comments about the post-->
 					<div class="container text-left row-gap-3">
 						<div>
+							{% for i in range(len(commenter)): %}
 							<div class="row">
 								<div class="col-2">
-									<img src="../avatar/test.jpeg" class="avatar" align="right">
+									<img src="{{ commenter[i].avatar }}" class="avatar" align="right">
 								</div>
 								<div class="col-8">
-									<h3>{{ name }}</h3>
+									<h3>{{ commenter[i].username }}</h3>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-2">
 								</div>
 								<div class="col-8">
-									<p>{{ something }}</p>
+									<p>{{ commenter_state[i].comment }}</p>
 								</div>
 							</div>
+							{% endfor %}
 						</div>
 					</div>
 				</section>
