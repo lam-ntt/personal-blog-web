@@ -110,10 +110,12 @@ def new_post():
 @login_required
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    author_id = State.query.filter_by(is_author=True, post_id=post.id).first()
-    author = User.query.filter_by(id=author_id).first() # a user
-    commenter_id = State.query.filter_by(is_author=False, post_id=post.id)
-    commenter = User.query.filter_by(id in commenter_id) # a list
+    author_state = State.query.filter_by(is_author=True,post_id=post.id).first()
+    author = User.query.filter_by(id=author_state.user_id).first() # a user
+    commenter_state = State.query.filter_by(is_author=False, post_id=post.id)
+    commenter = [] # a list of users
+    for state in commenter_state:
+        commenter.append(User.query.filter_by(id=state.user_id))
     if current_user.id == author.id: is_authen=True
     else: is_authen=False
 
@@ -127,7 +129,7 @@ def post(post_id):
         db.session.add(new_state)
         db.session.commit()
     return render_template('post.html', post=post, author=author,
-                           commenter=commenter, is_authen=is_authen)
+                           commenter_state=commenter_state, commenter=commenter, is_authen=is_authen)
 
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
