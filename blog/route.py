@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_mail import Message
 
-from blog import app, db, bcrypt, mail
+from blog import app, db, bcrypt, mail, login_manager
 from blog.model import User, Post, State
 from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
 
@@ -27,6 +27,7 @@ def admin():
     posts = Post.query.order_by(Post.date.desc()).all()
     return render_template('admin.html', posts=posts)
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
@@ -35,7 +36,7 @@ def signup():
         user = User(email=form.email.data, username=form.username.data, password=hash_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created. You are now able to login.', 'info')
+        flash('Your account has been created. You are now able to login.', 'success')
         return redirect(url_for('login'))
     return render_template('sign_up.html', form=form)
 
@@ -44,12 +45,13 @@ def signup():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            redirect(url_for('index'))
+            redirect(url_for('home'))
         else:
-            flash('You logged in fail. Please try again!', 'alert')
+            flash('You logged in fail. Please check the email and password!',
+                  'danger')
     return render_template('log_in.html', form=form)
 
 
@@ -65,7 +67,7 @@ def save_picture(form_picture, pos):
     picture_fn = random_hex + f_ext
     if pos==1:
         picture_path = os.path.join(app.root_path, 'avatar/'  , picture_fn)
-    else: 
+    else:
         picture_path = os.path.join(app.root_path, 'image_cover/'  , picture_fn)
     form_picture.save(picture_path)
     return picture_fn
@@ -84,7 +86,7 @@ def account():
         if form.image_cover.data:
             current_user.image_cover = save_picture(form.image_cover.data)
         db.session.commit()
-        flash('You account info has been updated!', 'info')
+        flash('You account info has been updated!', 'success')
         return redirect(url_for('account'))
     else:
         # Hien thi thong tin cu cua tai khoan
@@ -104,12 +106,13 @@ def new_post():
         db.session.add(post)
         db.session.add(state)
         db.session.commit(post)
-        flash('Your post has been created!', 'info')
+        flash('Your post has been created!', 'success')
         return redirect(url_for('index'))
     return render_template('new_post.html', form=form)
 
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
+# @login_required
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     author_state = State.query.filter_by(is_author=True,post_id=post.id).first()
@@ -118,7 +121,8 @@ def post(post_id):
     commenter = [] # a list of users
     for state in commenter_state:
         commenter.append(User.query.filter_by(id=state.user_id))
-    if current_user.id == author.id: is_authen=True
+
+    if login_manager.user_logged_in: is_authen=True
     else: is_authen=False
 
     form = CommentForm()
@@ -126,7 +130,7 @@ def post(post_id):
         state = State.query.filter(is_author=True, post_id=post.id).first()
         if current_user.id == state.user_id:
             new_state = State(is_author=True, user_id=current_user.id, post_id=post.id)
-        else: 
+        else:
             new_state = State(is_author=False, user_id=current_user.id, post_id=post.id)
         db.session.add(new_state)
         db.session.commit()
@@ -147,7 +151,7 @@ def update_post(post_id):
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
-        flash('Your post has been updated!', 'info')
+        flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id))
     else:
         # Hien thi thong tin cu cua bai dang
@@ -168,7 +172,7 @@ def delete_post(post_id):
         db.session.delete(state)
     db.session.delete(post)
     db.session.commit()
-    flash('Your post has been deleted!', 'info')
+    flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
 
 
@@ -189,7 +193,7 @@ def reset_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data)
         send_reset_mail(user)
-        flash('An email has been sent with instructions to reset your password', 'info')
+        flash('An email has been sent with instructions to reset your password', 'success')
         return redirect(url_for('login'))
     return render_template('reset_request.html', form=form)
 
@@ -198,13 +202,13 @@ def reset_request():
 def reset_password(token):
     user = User.verify_reset_token(token)
     if user is None:
-        flash('This is an invalid or expired token!', 'alert')
+        flash('This is an invalid or expired token!', 'danger')
         return redirect(url_for('reset_request'))
     form = ResetForm()
     if form.validate_on_submit():
         hash_password = bcrypt.generate_password_hash(form.password.data)
         user.password = hash_password
         db.session.commit()
-        flash('Your password has been updated. You are now able to login', 'info')
+        flash('Your password has been updated. You are now able to login', 'success')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
