@@ -110,6 +110,7 @@ def new_post():
 
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     author_state = State.query.filter_by(is_author=True,post_id=post.id).first()

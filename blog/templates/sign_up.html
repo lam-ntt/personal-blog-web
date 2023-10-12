@@ -18,8 +18,8 @@
             <header id="header" class="alt">
                 <nav id="nav">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="log_in.html" class="button">Log In</a></li>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('login') }}" class="button">Log In</a></li>
                     </ul>
                 </nav>
             </header>
@@ -39,29 +39,24 @@
                         <form method="post" action="#">
                             <div class="row gtr-uniform gtr-50">
                             <div class="col-12 col-12-mobilep">
-                                <input type="text" name="name" id="name" value="" placeholder="Name" />
+                                <p>{{ form.email.label }}</p>
+                                {{ form.email }}
                             </div>
                             <div class="col-12 col-12-mobilep">
-                                <input type="email" name="email" id="email" value="" placeholder="Example@email.com" />
+                                <p>{{ form.username.label }}</p>
+                                {{ form.username }}
                             </div>
                             <div class="col-12 col-12-mobilep">
-                                <input type="password" name="password" id="password" value="" placeholder="Password" />
+                                <p>{{ form.password.label }}</p>
+                                {{ form.password }}
                             </div>
                             <div class="col-12 col-12-mobilep">
-                                <input type="text" name="image-cover" id="image-cover" value="" placeholder="Image cover link" />
-                            </div>
-                            <div class="col-6 col-12-mobilep" style="text-align: left;">
-                                <p>Choose a profile picture:</p>
-                            </div>
-                            <div class="col-6 col-12-mobilep" style="text-align: left;">
-                                <input type="file" name="avatar" id="avatar" value="" placeholder="Avatar link" />
-                            </div>
-                            <div class="col-12 col-12-mobilep">
-                                <textarea name="biography" id="biography" value="" placeholder="Biography" rows="6"></textarea>
+                                <p>{{ form.confirm_password.label }}</p>
+                                {{ form.confirm_password }}
                             </div>
                             <div class="col-12">
                                 <ul class="actions">
-                                    <li><input type="submit" value="Submit" /></li>
+                                    {{ form.submit }}
                                     <li><input type="reset" value="Reset" class="alt" /></li>
                                 </ul>
                             </div>
