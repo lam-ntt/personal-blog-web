@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField
+from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
 from flask_login import current_user
@@ -10,9 +10,8 @@ from blog.model import User
 class SignupForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Username', validators=[DataRequired(), Length(min=2)])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Password', validators=[DataRequired(),
-                                                      EqualTo('password')])
+    password = StringField('Password', validators=[DataRequired()])
+    confirm_password = StringField('Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Signup')
 
     def validate_email(self, email):
@@ -28,7 +27,7 @@ class SignupForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = StringField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
 

@@ -4,9 +4,10 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
+{% from 'bootstrap5/form.html' import render_form %}
 <html>
 	<head>
-		<title>Blog - {{Post}}</title>
+		<title>Blog - {{ post.title }}</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../static/assets/css/main.css" />
@@ -19,34 +20,36 @@
 					<nav style="left: 0.75em; right: auto;">
 						<ul>
 							<li>
-								<a><img src="../avatar/test.jpeg" class="avatar"></a>
+								<a><img src="{{ current_user.avatar }}" class="avatar"></a>
 							</li>
 						</ul>
 					</nav>
 					<nav id="nav">
 						<ul>
-							<li><a href="index.html">Home</a></li>
-							<li>
-								<a href="personal_web.html" class="icon solid">Info</a>
-							</li>
-							<li><a href="#" class="button">Log Out</a></li>
+							<li><a href="{{ url_for('home') }}">Home</a></li>
+							{% if %}
+							<li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
+							{% else %}
+							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+							{% endif %}
 						</ul>
 					</nav>
 				</header>
 
 			<!-- Banner -->
-				<section id="banner" style="background-image: url();">
-					<h2><b style="color: white;">Title</b></h2>
-					<p><b style="color: white;">"Subtitle"</b></p>
+				<section id="banner" style="background-image: url('{{ post.image_cover }}');">
+					<h2><b style="color: white;">{{ post.title }}</b></h2>
                     <p>
                       <i>Posted by
-                      <a href="#">name</a> on date
+                      <a href="#">{{ author }}</a> on {{ post.date }}
                       </i>
                     </p>
+					{% if %}
 					<ul class="actions special">
 						<li><a href="log_in.html" class="button primary">Log In</a></li>
 						<li><a href="sign_up.html" class="button">Sign Up</a></li>
 					</ul>
+					{% endif %}
 				</section>
 
 			<!-- Main -->
@@ -54,44 +57,59 @@
 				<!--Blog-->
 					<div style="margin: 20% 10% 0% 10%">
 					  <p>
-                        Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.
+						  {{ post.content }}
 					  </p>
 					</div>
+
 					<hr>
+					{% if is_authen %}
+                    <div class="col-12" style="margin: 0 0 0 10%">
+                    <ul class="actions">
+                        <li><a href="{{ url_for('update_post') }}" class="button special">Update Post</a></li>
+                    </ul>
+                    </div>
+                	</hr>
+					{% endif %}
 				<!--Comment-->
-					<div style="margin: 0% 10% 0% 10%">
-						<h3>Comment</h3>
-						<form method="post" action="#">
-							<div class="wrapper">
-								<textarea name="comment" placeholder="Comment" rows="6"></textarea>
-							</div>
-							 <div class="col-12" style="margin: 3% 0;">
-								<ul class="actions">
-									<li><input type="submit" value="Submit" /></li>
-									<li><input type="reset" value="Reset" class="alt" /></li>
-								</ul>
-							</div>
-						</form>
+					<div class="container">
+						<h1>Comment</h1>
+						{{ render_form(form) }}
 					</div>
+<!--					<div style="margin: 0% 10% 0% 10%">-->
+<!--						<h3>Comment</h3>-->
+<!--						<form method="post" action="#">-->
+<!--							<div class="wrapper">-->
+<!--								<textarea name="comment" placeholder="Comment" rows="6"></textarea>-->
+<!--							</div>-->
+<!--							 <div class="col-12" style="margin: 3% 0;">-->
+<!--								<ul class="actions">-->
+<!--									<li><input type="submit" value="Submit" /></li>-->
+<!--									<li><input type="reset" value="Reset" class="alt" /></li>-->
+<!--								</ul>-->
+<!--							</div>-->
+<!--						</form>-->
+<!--					</div>-->
 					<hr>
 <!--					All comments about the post-->
 					<div class="container text-left row-gap-3">
 						<div>
+							{% for i in range(len(commenter)): %}
 							<div class="row">
 								<div class="col-2">
-									<img src="../avatar/test.jpeg" class="avatar" align="right">
+									<img src="{{ commenter[i].avatar }}" class="avatar" align="right">
 								</div>
 								<div class="col-8">
-									<h3>{{ name }}</h3>
+									<h3>{{ commenter[i].username }}</h3>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-2">
 								</div>
 								<div class="col-8">
-									<p>{{ something }}</p>
+									<p>{{ commenter_state[i].comment }}</p>
 								</div>
 							</div>
+							{% endfor %}
 						</div>
 					</div>
 				</section>
