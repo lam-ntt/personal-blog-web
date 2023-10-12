@@ -38,6 +38,7 @@
                         <section class="box">
                             <h3>Log in Form</h3>
                             <form method="post" action="{{ url_for('login') }}">
+								{{ form.hidden_tag() }}
                                 <div class="row gtr-uniform gtr-50">
                                     <div class="col-12 col-12-mobilep">
 										<p>{{ form.email.label }}</p>
