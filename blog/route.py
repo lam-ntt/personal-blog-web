@@ -54,8 +54,6 @@ def login():
                   'danger')
     return render_template('log_in.html', form=form)
 
-# and bcrypt.check_password_hash(user.password, form.password.data)
-
 
 @app.route('/logout')
 def logout():
