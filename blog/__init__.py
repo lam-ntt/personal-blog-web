@@ -1,13 +1,15 @@
 from datetime import timedelta
 
 from flask import Flask
+from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 
 
-app = Flask(  __name__ )
+app = Flask( __name__ )
+ckeditor = CKEditor(app)
 app.config["SECRET_KEY"] = "r$qAjWhNN{GXD?x/ncd1xYd/t"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

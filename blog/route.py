@@ -151,7 +151,11 @@ def update_post(post_id):
     if current_user.id != state.user_id:
         abort(403)
 
-    form = PostForm()
+    form = PostForm(
+        title=post.title,
+        content=post.content,
+        image_cover=post.image_cover
+    )
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data

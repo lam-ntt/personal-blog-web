@@ -32,11 +32,11 @@
 					</nav>
 					<nav id="nav">
 						<ul>
-							<li><a href="index.html">Home</a></li>
+							<li><a href="{{ url_for('home') }}">Home</a></li>
 							<li>
-								<a href="personal_web.html" class="icon solid">Info</a>
+								<a href="{{ url_for('account') }}" class="icon solid">Info</a>
 							</li>
-							<li><a href="log_in.html" class="button">Log In</a></li>
+							<li><a href="{{ url_for('logout') }}" class="button">Log In</a></li>
 						</ul>
 					</nav>
 				</header>
@@ -56,21 +56,23 @@
                             <form method="post" action="#">
                                 <div class="row gtr-uniform gtr-50">
                                     <div class="col-12 col-12-mobilep">
-                                        <input type="text" name="title" id="title" value="" placeholder="Title" />
+                                        <p>{{ form.title.label }}</p>
+										{{ form.title }}
                                     </div>
-                                    <div class="col-12 col-12-mobilep">
-                                        <input type="text" name="subtitle" id="subtitle" value="" placeholder="Subtitle" />
+                                    <div class="col-6 col-12-mobilep">
+                                        <p>{{ form.image_cover.label }}</p>
                                     </div>
+									<div class="col-6 col-12-mobilep">
+										<p>{{ form.image_cover }}</p>
+									</div>
 									<div class="col-12 col-12-mobilep">
-                                        <input type="text" name="image-cover" id="image-cover" value="" placeholder="Image cover link" />
-                                    </div>
-                                    <h3>Body</h3>
-                                    <div class="col-12 col-12-mobilep wrapper">
-                                        <textarea id="textEditor"></textarea>
+                                        <p>{{ form.content.label }}</p>
+										{{ ckeditor.load() }}
+										{{ form.content }}
                                     </div>
                                     <div class="col-12">
                                         <ul class="actions">
-                                            <li><input type="submit" value="Submit" /></li>
+                                            {{ form.submit }}
                                             <li><input type="reset" value="Reset" class="alt" /></li>
                                         </ul>
                                     </div>
