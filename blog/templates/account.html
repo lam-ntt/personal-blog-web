@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Blog - {{ }}</title>
+		<title>Blog - {{ current_user.username }}</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../static/assets/css/main.css" />
@@ -20,24 +20,24 @@
 					<nav style="left: 0.75em; right: auto;">
 						<ul>
 							<li>
-								<a><img src="../avatar/test.jpeg" class="avatar"></a>
+								<a><img src="{{ current_user.avatar }}" class="avatar"></a>
 							</li>
 						</ul>
 					</nav>
 					<nav id="nav">
 						<ul>
-							<li><a href="index.html">Home</a></li>
+							<li><a href="{{ url_for('home') }}">Home</a></li>
 							<li>
-								<a href="personal_web.html" class="icon solid">Info</a>
+								<a href="{{ url_for('account') }}l" class="icon solid">Info</a>
 							</li>
-							<li><a href="#" class="button">Log Out</a></li>
+							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
 						</ul>
 					</nav>
 				</header>
 
 			<!-- Banner -->
-				<section id="banner" style="background-image: url();">
-					<h2><b style="color: white;">{{ }}'s Blog</b></h2>
+				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'), url({{ current_user.image_cover }});">
+					<h2><b style="color: white;">{{ current_user.username }}'s Blog</b></h2>
 				</section>
 
 			<!-- Main -->
@@ -53,19 +53,27 @@
 						</div>
 						<div class="col-6 col-6-narrower col-6-mobilep">
 							<ul>
-								<li><p><b>Name: </b> {{ }}</p></li>
-								<li><p><b>Email: </b> {{ }}</p></li>
-								<li><p><b>Biography: </b> {{ }}</p></li>
+								<li><p><b>Name: </b> {{ current_user.username  }}</p></li>
+								<li><p><b>Email: </b> {{ current_user.email }}</p></li>
+								<li><p><b>Biography: </b> {{ current_user.bio }}</p></li>
 							</ul>
 						</div>
 					</div>
+
+					<hr>
+                    <div class="col-12" style="margin: 0 0 0 10%">
+                    <ul class="actions">
+                        <li><a href="{{ url_for('update_account') }}" class="button special">Update Account</a></li>
+                    </ul>
+                    </div>
+					<hr>
 				</section>
 			    <hr>
 			<!--Blog-->
 				<section id="main" class="container">
 					<section class="box special">
 						<header class="major">
-							<h2>All {{ }}'s Blogs</h2>
+							<h2>All {{ current_user.username }}'s Blogs</h2>
 						</header>
 					</section>
 					<div style="margin: 0%">

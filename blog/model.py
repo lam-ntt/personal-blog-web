@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     bio = db.Column(db.String(100))
-    avatar = db.Column(db.String(1014), default="../avatar/default.png")
+    avatar = db.Column(db.String(1014), default="../static/avatar/default.png")
     image_cover = db.Column(db.String(1014), default="../static/images/img.png")
     rank_id = db.Column(db.Integer, default=2) # except admin, rank_id=1
     user_rela = db.relationship('State', backref=db.backref('user', lazy=True))

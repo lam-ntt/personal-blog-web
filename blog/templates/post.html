@@ -4,7 +4,6 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-{% from 'bootstrap5/form.html' import render_form %}
 <html>
 	<head>
 		<title>Blog - {{ post.title }}</title>
@@ -44,10 +43,10 @@
                       <a href="#">{{ author }}</a> on {{ post.date }}
                       </i>
                     </p>
-					{% if %}
+					{% if not current_user.is_authenticated:%}
 					<ul class="actions special">
-						<li><a href="log_in.html" class="button primary">Log In</a></li>
-						<li><a href="sign_up.html" class="button">Sign Up</a></li>
+						<li><a href="{{ url_for('login') }}" class="button primary">Log In</a></li>
+						<li><a href="{{ url_for('signup') }}" class="button">Sign Up</a></li>
 					</ul>
 					{% endif %}
 				</section>

@@ -66,19 +66,24 @@ def save_picture(form_picture, pos):
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
     if pos==1:
-        picture_path = os.path.join(app.root_path, 'avatar/'  , picture_fn)
+        picture_path = os.path.join(app.root_path, 'avatar/', picture_fn)
     else:
         picture_path = os.path.join(app.root_path, 'image_cover/'  , picture_fn)
     form_picture.save(picture_path)
     return picture_fn
 
 
-@app.route('/account', methods=['GET', 'POST'])
+@app.route('/account/update')
 @login_required
 def account():
+    return render_template('account.html')
+
+
+@app.route('/account/update', methods=['GET', 'POST'])
+@login_required
+def update_account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
-        current_user.email = form.email.data
         current_user.username = form.username.data
         current_user.bio = form.bio.data
         if form.avatar.data:
@@ -93,7 +98,7 @@ def account():
         pass
     avatar_file = url_for('avatar', filename=current_user.avatar)
     image_cover_file = url_for('image_cover', filename=current_user.image_cover)
-    return render_template('account.html', form=form, avatar_file=avatar_file,image_cover_file=image_cover_file)
+    return render_template('update_account.html', form=form, avatar_file=avatar_file,image_cover_file=image_cover_file)
 
 
 @app.route('/post/new', methods=['GET', 'POST'])
