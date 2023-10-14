@@ -31,7 +31,9 @@ def admin():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
+    print("--->1")
     if form.validate_on_submit():
+        print("--->2")
         hash_password = bcrypt.generate_password_hash(form.password.data)
         user = User(email=form.email.data, username=form.username.data, password=hash_password)
         db.session.add(user)

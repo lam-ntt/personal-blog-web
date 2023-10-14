@@ -40,6 +40,17 @@
                             {{ form.hidden_tag() }}
                             <div class="row gtr-uniform gtr-50">
                             <div class="col-12 col-12-mobilep">
+                                <div class="col-lg-8 col-md-10 mx-auto content">
+                                    <div>
+                                        {% with messages = get_flashed_messages(with_categories=true) %}
+                                            {% for message, category in messages %}
+                                                <div class="alert alert-{{ category }}">
+                                                    {{ message }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
                                 <p>{{ form.email.label }}</p>
                                 {{ form.email }}
                             </div>
