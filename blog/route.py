@@ -144,7 +144,7 @@ def post(post_id):
         commenter.append(User.query.filter_by(id=state.user_id))
 
     # Lay thong tin kiem tra user hien tai co la chu post khong
-    if current_user.id==author_state.user_id: is_authen=True
+    if current_user.id == author_state.user_id: is_authen=True
     else: is_authen=False
 
     form = CommentForm()
@@ -156,7 +156,7 @@ def post(post_id):
         db.session.commit()
 
     return render_template('post.html', form=form, author=author, post=post,
-                           commenter=commenter, commenter_state=commenter_state, is_authen=is_authen)
+                           commenter=commenter[::-1], commenter_state=commenter_state[::-1], is_authen=is_authen)
 
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])

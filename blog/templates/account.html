@@ -28,7 +28,7 @@
 						<ul>
 							<li><a href="{{ url_for('home') }}">Home</a></li>
 							<li>
-								<a href="{{ url_for('account') }}l" class="icon solid">Info</a>
+								<a href="{{ url_for('account') }}" class="icon solid">Info</a>
 							</li>
 							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
 						</ul>
@@ -49,7 +49,7 @@
 					</section>
 					<div class="row">
 						<div class="col-6 col-6-narrower col-6-mobilep">
-							<img src="../static/test.jpg" width="70%" height="auto" style="position: relative">
+							<img src="{{ avatar_file }}" width="70%" height="auto" style="position: relative">
 						</div>
 						<div class="col-6 col-6-narrower col-6-mobilep">
 							<ul>
@@ -88,10 +88,12 @@
 										</tr>
 									</thead>
 									<tbody>
+									{% for post in posts: %}
 										<tr>
-											<td>Something</td>
-											<td><a hef="#">✘</a></td>
+											<td>{{ post.title }}</td>
+											<td><a hef="{{ url_for('delete_post', post_id=post.id) }}">✘</a></td>
 										</tr>
+									{% endfor %}
 									</tbody>
 								</table>
 							</div>

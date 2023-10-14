@@ -40,15 +40,9 @@
 					<h2><b style="color: white;">{{ post.title }}</b></h2>
                     <p>
                       <i>Posted by
-                      <a href="#">{{ author }}</a> on {{ post.date }}
+                      <a href="#">{{ author.username }}</a> on {{ post.date }}
                       </i>
                     </p>
-					{% if not current_user.is_authenticated:%}
-					<ul class="actions special">
-						<li><a href="{{ url_for('login') }}" class="button primary">Log In</a></li>
-						<li><a href="{{ url_for('signup') }}" class="button">Sign Up</a></li>
-					</ul>
-					{% endif %}
 				</section>
 
 			<!-- Main -->
@@ -70,28 +64,31 @@
                 	</hr>
 					{% endif %}
 				<!--Comment-->
-					<div class="container">
-						<h1>Comment</h1>
+					{% if current_user.is_authenticated %}
+					<div style="margin: 0% 10% 0% 10%">
+						<h3>Comment</h3>
+						<form method="post" action="{{ url_for('post', post_id=post.id) }}">
+							{{ form.hidden_tag() }}
+							<div class="row gtr-uniform gtr-50">
+								<div class="col-12 col-12-mobilep">
+									<p>{{ form.content.label }}</p>
+									{{ form.content }}
+								</div>
+							</div>
+							 <div class="col-12" style="margin: 3% 0;">
+								<ul class="actions">
+									{{ form.submit }}
+									<li><input type="reset" value="Reset" class="alt" /></li>
+								</ul>
+							</div>
+						</form>
 					</div>
-<!--					<div style="margin: 0% 10% 0% 10%">-->
-<!--						<h3>Comment</h3>-->
-<!--						<form method="post" action="#">-->
-<!--							<div class="wrapper">-->
-<!--								<textarea name="comment" placeholder="Comment" rows="6"></textarea>-->
-<!--							</div>-->
-<!--							 <div class="col-12" style="margin: 3% 0;">-->
-<!--								<ul class="actions">-->
-<!--									<li><input type="submit" value="Submit" /></li>-->
-<!--									<li><input type="reset" value="Reset" class="alt" /></li>-->
-<!--								</ul>-->
-<!--							</div>-->
-<!--						</form>-->
-<!--					</div>-->
 					<hr>
+					{% endif %}
 <!--					All comments about the post-->
 					<div class="container text-left row-gap-3">
 						<div>
-							{% for i in range(len(commenter)): %}
+							{% for i in range(commenter| length): %}
 							<div class="row">
 								<div class="col-2">
 									<img src="{{ commenter[i].avatar }}" class="avatar" align="right">

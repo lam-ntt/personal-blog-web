@@ -53,7 +53,7 @@
                         <!-- Form -->
                         <section class="box">
                             <h3>Blog Form</h3>
-                            <form method="post" action="#">
+                            <form method="post" action="{{ url_for('new_post') }}">
                                 <div class="row gtr-uniform gtr-50">
                                     <div class="col-12 col-12-mobilep">
                                         <p>{{ form.title.label }}</p>
