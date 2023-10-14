@@ -26,7 +26,7 @@
 					<nav id="nav">
 						<ul>
 							<li><a href="{{ url_for('home') }}">Home</a></li>
-							{% if %}
+							{% if current_user.is_authenticated %}
 							<li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
 							{% else %}
 							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
@@ -64,7 +64,7 @@
 					{% if is_authen %}
                     <div class="col-12" style="margin: 0 0 0 10%">
                     <ul class="actions">
-                        <li><a href="{{ url_for('update_post') }}" class="button special">Update Post</a></li>
+                        <li><a href="{{ url_for('update_post', post_id=post.id) }}" class="button special">Update Post</a></li>
                     </ul>
                     </div>
                 	</hr>
@@ -72,7 +72,6 @@
 				<!--Comment-->
 					<div class="container">
 						<h1>Comment</h1>
-						{{ render_form(form) }}
 					</div>
 <!--					<div style="margin: 0% 10% 0% 10%">-->
 <!--						<h3>Comment</h3>-->

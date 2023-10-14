@@ -37,6 +37,7 @@
                     <section class="box">
                         <h3>Register Form</h3>
                         <form method="post" action="#">
+                            {{ form.hidden_tag() }}
                             <div class="row gtr-uniform gtr-50">
                             <div class="col-12 col-12-mobilep">
                                 <p>{{ form.email.label }}</p>

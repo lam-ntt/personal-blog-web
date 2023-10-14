@@ -45,6 +45,7 @@
                     <section class="box">
                         <h3>Update Form</h3>
                         <form method="post" action="#">
+                            {{ form.hidden_tag() }}
                             <div class="row gtr-uniform gtr-50">
                             <div class="col-12 col-12-mobilep">
                                 <p>{{ form.username.label }}</p>

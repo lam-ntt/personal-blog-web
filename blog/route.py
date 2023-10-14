@@ -50,42 +50,54 @@ def login():
             login_user(user)
             return redirect(url_for('home'))
         else:
-            flash('You logged in fail. Please check the email and password!',
-                  'danger')
+            flash('You logged in fail. Please check the email and password!', 'danger')
     return render_template('log_in.html', form=form)
 
 
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('home'))
 
 
-def save_picture(form_picture, pos):
+def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    if pos==1:
-        picture_path = os.path.join(app.root_path, 'avatar/', picture_fn)
-    else:
-        picture_path = os.path.join(app.root_path, 'image_cover/'  , picture_fn)
+    picture_path = os.path.join(app.root_path, 'static/', picture_fn)
     form_picture.save(picture_path)
     return picture_fn
 
 
-@app.route('/account/update')
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html')
+    # # Lay link anh avatar va image_cover cua 1 account
+    avatar_file = url_for('static', filename=current_user.avatar)
+    # image_cover_file = url_for('image', filename=current_user.image_cover)
+
+    # Lay thong tin ve cac post cua 1 account
+    posts_state = State.query.filter_by(is_author=True, user_id=current_user.id)
+    posts = []
+    for state in posts_state:
+        posts.append(Post.query.filter_by(id=state.post_id).first())
+
+    return render_template('account.html', posts=posts, avatar_file=avatar_file)
 
 
 @app.route('/account/update', methods=['GET', 'POST'])
 @login_required
 def update_account():
-    form = UpdateAccountForm()
+    form = UpdateAccountForm(
+        username=current_user.username,
+        bio=current_user.bio,
+        avatar=current_user.avatar,
+        image_cover=current_user.image_cover
+    )
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.bio = form.bio.data
+        print(form.avatar.data)
         if form.avatar.data:
             current_user.avatar = save_picture(form.avatar.data)
         if form.image_cover.data:
@@ -96,9 +108,7 @@ def update_account():
     else:
         # Hien thi thong tin cu cua tai khoan
         pass
-    avatar_file = url_for('avatar', filename=current_user.avatar)
-    image_cover_file = url_for('image_cover', filename=current_user.image_cover)
-    return render_template('update_account.html', form=form, avatar_file=avatar_file,image_cover_file=image_cover_file)
+    return render_template('update_account.html', form=form)
 
 
 @app.route('/post/new', methods=['GET', 'POST'])
@@ -106,51 +116,53 @@ def update_account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data)
+        post = Post(title=form.title.data, content=form.content.data, image_cover=save_picture(form.image_cover.data, 3))
         state = State(is_author=True, user_id=current_user.id, post_id=post.id)
         db.session.add(post)
         db.session.add(state)
         db.session.commit(post)
         flash('Your post has been created!', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
     return render_template('new_post.html', form=form)
 
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def post(post_id):
-    post = Post.query.get_or_404(post_id)
+    # Lay thong tin ve post hien tai va link anh image_cover
+    post = Post.query.filter_by(id=post_id).first()
+    # image_cover_file = url_for('image', filename=post.image_cover)
+
+    # Lay thong tin ve author
     author_state = State.query.filter_by(is_author=True,post_id=post.id).first()
     author = User.query.filter_by(id=author_state.user_id).first() # a user
+
+    # Lay thong tin ve commenter va state_comment
     commenter_state = State.query.filter_by(is_author=False, post_id=post.id)
     commenter = [] # a list of users
     for state in commenter_state:
         commenter.append(User.query.filter_by(id=state.user_id))
 
-    if login_manager.user_logged_in: is_authen=True
+    # Lay thong tin kiem tra user hien tai co la chu post khong
+    if current_user.id==author_state.user_id: is_authen=True
     else: is_authen=False
 
     form = CommentForm()
     if form.validate_on_submit():
-        state = State.query.filter(is_author=True, post_id=post.id).first()
-        if current_user.id == state.user_id:
-            new_state = State(is_author=True, user_id=current_user.id, post_id=post.id)
-        else:
-            new_state = State(is_author=False, user_id=current_user.id, post_id=post.id)
-        db.session.add(new_state)
+        # State cua nguoi comment thi mac dinh is_author=False ke ca chu post
+        state = State(is_author=False, user_id=current_user.id,
+                          post_id=post.id, comment=form.content.data)
+        db.session.add(state)
         db.session.commit()
-    return render_template('post.html',form=form, post=post, author=author,
-                           commenter_state=commenter_state, commenter=commenter, is_authen=is_authen)
+
+    return render_template('post.html', form=form, author=author, post=post,
+                           commenter=commenter, commenter_state=commenter_state, is_authen=is_authen)
 
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    state = State.query.filter(is_author=True, post_id=post.id).first()
-    if current_user.id != state.user_id:
-        abort(403)
-
+    post = Post.query.filter_by(id=post_id).first()
     form = PostForm(
         title=post.title,
         content=post.content,
@@ -159,6 +171,7 @@ def update_post(post_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        post.image_cover = save_picture(form.image_cover.data)
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id))
@@ -171,11 +184,7 @@ def update_post(post_id):
 @app.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    state = State.query.filter(is_author=True, post_id=post.id).first()
-    if current_user.id != state.user_id:
-        abort(403)
-
+    post = Post.query.filter_by(id=post_id).first()
     states = State.query.filter(post_id=post.id)
     for state in states:
         db.session.delete(state)
