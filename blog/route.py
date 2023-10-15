@@ -31,14 +31,14 @@ def admin():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
-    print("--->1")
-    if form.validate_on_submit():
-        print("--->2")
+    if not form.validate() and form.is_submitted():
+        flash('Your account has been created. You are now able to login.', 'success')
+        return redirect(url_for('signup'))
+    elif form.validate_on_submit():
         hash_password = bcrypt.generate_password_hash(form.password.data)
         user = User(email=form.email.data, username=form.username.data, password=hash_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created. You are now able to login.', 'success')
         return redirect(url_for('login'))
     return render_template('sign_up.html', form=form)
 
@@ -53,6 +53,7 @@ def login():
             return redirect(url_for('home'))
         else:
             flash('You logged in fail. Please check the email and password!', 'danger')
+            redirect(url_for('login'))
     return render_template('log_in.html', form=form)
 
 

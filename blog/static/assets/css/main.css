@@ -3912,3 +3912,11 @@
         text-align: left;
         margin: 0;
     }
+
+/* Alert */
+    .alert-success {
+        color: green;
+    }
+    .alert-danger {
+        color: red;
+    }

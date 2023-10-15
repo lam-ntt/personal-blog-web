@@ -40,6 +40,21 @@
 					<h2><b style="color: white;">{{ current_user.username }}'s Blog</b></h2>
 				</section>
 
+<!--                Flash-->
+                <div class="col-12 col-12-mobilep">
+                    <div class="col-lg-8 col-md-10 mx-auto content">
+                        <div>
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+
 			<!-- Main -->
 				<section class="container" id="bio">
 					<section class="box special">

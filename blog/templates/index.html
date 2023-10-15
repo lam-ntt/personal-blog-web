@@ -57,6 +57,21 @@
                     </header>
                 </section>
 
+<!--                Flash-->
+                <div class="col-12 col-12-mobilep">
+                    <div class="col-lg-8 col-md-10 mx-auto content">
+                        <div>
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+
                 <!--Blog-->
                 {% for post in posts: %}
                 <div style="margin: 10%">
