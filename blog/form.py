@@ -72,8 +72,8 @@ class RequestForm(FlaskForm):
             else: raise ValidationError('This email is not linked to any account. Please register first')
 
 class ResetForm(FlaskForm):
-    password = StringField('Password', validators=[DataRequired()])
-    confirm_password = StringField('Password', validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Signup')
 
 
