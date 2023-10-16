@@ -41,6 +41,7 @@
 				</section>
 
 <!--                Flash-->
+			<div class="row gtr-uniform gtr-50">
                 <div class="col-12 col-12-mobilep">
                     <div class="col-lg-8 col-md-10 mx-auto content">
                         <div>
@@ -54,6 +55,7 @@
                         </div>
                     </div>
                 </div>
+			</div>
 
 			<!-- Main -->
 				<section class="container" id="bio">
@@ -106,7 +108,7 @@
 									{% for post in posts: %}
 										<tr>
 											<td>{{ post.title }}</td>
-											<td><a hef="{{ url_for('delete_post', post_id=post.id) }}">✘</a></td>
+											<td><a href="{{ url_for('delete_post', post_id=post.id) }}">✘</a></td>
 										</tr>
 									{% endfor %}
 									</tbody>

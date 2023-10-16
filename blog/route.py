@@ -119,7 +119,7 @@ def update_account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, image_cover=save_picture(form.image_cover.data, 3))
+        post = Post(title=form.title.data, content=form.content.data, image_cover=save_picture(form.image_cover.data))
         state = State(is_author=True, user_id=current_user.id, post_id=post.id)
         db.session.add(post)
         db.session.add(state)
@@ -188,7 +188,7 @@ def update_post(post_id):
 @login_required
 def delete_post(post_id):
     post = Post.query.filter_by(id=post_id).first()
-    states = State.query.filter(post_id=post.id)
+    states = State.query.filter_by(post_id=post.id)
     for state in states:
         db.session.delete(state)
     db.session.delete(post)
