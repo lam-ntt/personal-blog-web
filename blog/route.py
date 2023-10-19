@@ -1,19 +1,14 @@
 import os, secrets # image processing
 
-from flask import render_template, redirect, url_for, request, flash, abort
+from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_mail import Message
 
-from blog import app, db, bcrypt, mail, login_manager
+from blog import app, db, bcrypt, mail
 from blog.model import User, Post, State
 from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
 
 
-# Taskbar trước khi đăng nhập có Home, Signin, Login
-# Taskbar sau khi đăng nhập có Home, Create, Logout
-
-
-# Hiển thị các bài đăng
 @app.route('/')
 @app.route('/home')
 def home():
@@ -21,27 +16,28 @@ def home():
     posts = Post.query.order_by(Post.date.desc()).paginate(page=page, per_page=5)
     return render_template('index.html', posts=posts)
 
-
 @app.route('/admin')
 def admin():
     posts = Post.query.order_by(Post.date.desc()).all()
     return render_template('admin.html', posts=posts)
 
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
-    if not form.validate() and form.is_submitted():
-        flash('Your account has been created. You are now able to login.', 'success')
-        return redirect(url_for('signup'))
-    elif form.validate_on_submit():
+    if form.validate_on_submit():
         hash_password = bcrypt.generate_password_hash(form.password.data)
         user = User(email=form.email.data, username=form.username.data, password=hash_password)
         db.session.add(user)
         db.session.commit()
+        flash('Your account has been created. You are now able to login.',
+              'success')
         return redirect(url_for('login'))
+    else:
+        if form.is_submitted():
+            flash('Your mail or username is invalid!', 'danger')
     return render_template('sign_up.html', form=form)
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -56,11 +52,11 @@ def login():
             redirect(url_for('login'))
     return render_template('log_in.html', form=form)
 
-
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
 
 
 def save_picture(form_picture):
@@ -69,24 +65,17 @@ def save_picture(form_picture):
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(app.root_path, 'static/', picture_fn)
     form_picture.save(picture_path)
+    picture_fn = '..\static\\' + picture_fn
     return picture_fn
-
 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    # # Lay link anh avatar va image_cover cua 1 account
-    avatar_file = url_for('static', filename=current_user.avatar)
-    # image_cover_file = url_for('image', filename=current_user.image_cover)
-
-    # Lay thong tin ve cac post cua 1 account
     posts_state = State.query.filter_by(is_author=True, user_id=current_user.id)
     posts = []
     for state in posts_state:
         posts.append(Post.query.filter_by(id=state.post_id).first())
-
-    return render_template('account.html', posts=posts, avatar_file=avatar_file)
-
+    return render_template('account.html', posts=posts)
 
 @app.route('/account/update', methods=['GET', 'POST'])
 @login_required
@@ -100,7 +89,6 @@ def update_account():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.bio = form.bio.data
-        print(form.avatar.data)
         if form.avatar.data:
             current_user.avatar = save_picture(form.avatar.data)
         if form.image_cover.data:
@@ -108,10 +96,8 @@ def update_account():
         db.session.commit()
         flash('You account info has been updated!', 'success')
         return redirect(url_for('account'))
-    else:
-        # Hien thi thong tin cu cua tai khoan
-        pass
     return render_template('update_account.html', form=form)
+
 
 
 @app.route('/post/new', methods=['GET', 'POST'])
@@ -119,11 +105,15 @@ def update_account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, image_cover=save_picture(form.image_cover.data, 3))
-        state = State(is_author=True, user_id=current_user.id, post_id=post.id)
+        post = Post(title=form.title.data, content=form.content.data,
+                    image_cover=save_picture(form.image_cover.data))
         db.session.add(post)
+        db.session.commit()
+
+        post = Post.query.order_by(Post.id.desc()).first()
+        state = State(is_author=True, user_id=current_user.id, post_id=post.id)
         db.session.add(state)
-        db.session.commit(post)
+        db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
     return render_template('new_post.html', form=form)
@@ -132,29 +122,23 @@ def new_post():
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 @login_required
 def post(post_id):
-    # Lay thong tin ve post hien tai va link anh image_cover
     post = Post.query.filter_by(id=post_id).first()
-    # image_cover_file = url_for('image', filename=post.image_cover)
 
-    # Lay thong tin ve author
     author_state = State.query.filter_by(is_author=True,post_id=post.id).first()
     author = User.query.filter_by(id=author_state.user_id).first() # a user
 
-    # Lay thong tin ve commenter va state_comment
     commenter_state = State.query.filter_by(is_author=False, post_id=post.id)
     commenter = [] # a list of users
     for state in commenter_state:
         commenter.append(User.query.filter_by(id=state.user_id))
 
-    # Lay thong tin kiem tra user hien tai co la chu post khong
     if current_user.id == author_state.user_id: is_authen=True
     else: is_authen=False
 
     form = CommentForm()
     if form.validate_on_submit():
-        # State cua nguoi comment thi mac dinh is_author=False ke ca chu post
         state = State(is_author=False, user_id=current_user.id,
-                          post_id=post.id, comment=form.content.data)
+                      post_id=post.id, comment=form.content.data)
         db.session.add(state)
         db.session.commit()
 
@@ -195,6 +179,8 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
+
+
 
 
 def send_reset_mail(user):

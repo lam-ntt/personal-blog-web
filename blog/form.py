@@ -58,7 +58,7 @@ class PostForm(FlaskForm):
     submit = SubmitField('Post')
 
 class CommentForm(FlaskForm):
-    content = TextAreaField('Content', validators=[DataRequired()])
+    content = CKEditorField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
     
 class RequestForm(FlaskForm):
@@ -74,7 +74,7 @@ class RequestForm(FlaskForm):
 class ResetForm(FlaskForm):
     password = StringField('Password', validators=[DataRequired()])
     confirm_password = StringField('Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Signup')
+    submit = SubmitField('Reset')
 
 
 

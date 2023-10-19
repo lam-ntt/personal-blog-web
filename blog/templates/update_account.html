@@ -44,12 +44,16 @@
                     <!-- Form -->
                     <section class="box">
                         <h3>Update Form</h3>
-                        <form method="post" action="#">
+                        <form method="post" action="#" enctype="multipart/form-data">
                             {{ form.hidden_tag() }}
                             <div class="row gtr-uniform gtr-50">
                             <div class="col-12 col-12-mobilep">
                                 <p>{{ form.username.label }}</p>
                                 {{ form.username }}
+                            </div>
+                            <div class="col-12 col-12-mobilep">
+                                <p>{{ form.bio.label }}</p>
+                                {{ form.bio }}
                             </div>
                             <div class="col-6 col-6-mobilep">
                                 <p>{{ form.avatar.label }}</p>
@@ -62,10 +66,6 @@
                             </div>
                             <div class="col-6 col-6-mobilep">
                                 <p>{{ form.image_cover }}</p>
-                            </div>
-                            <div class="col-12 col-12-mobilep">
-                                <p>{{ form.bio.label }}</p>
-                                {{ form.bio }}
                             </div>
                             <div class="col-12">
                                 <ul class="actions">

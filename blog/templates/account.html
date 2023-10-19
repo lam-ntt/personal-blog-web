@@ -36,7 +36,7 @@
 				</header>
 
 			<!-- Banner -->
-				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'), url({{ current_user.image_cover }});">
+				<section id="banner">
 					<h2><b style="color: white;">{{ current_user.username }}'s Blog</b></h2>
 				</section>
 
@@ -64,7 +64,7 @@
 					</section>
 					<div class="row">
 						<div class="col-6 col-6-narrower col-6-mobilep">
-							<img src="{{ avatar_file }}" width="70%" height="auto" style="position: relative">
+							<img src="{{ current_user.avatar }}" width="70%" height="auto" style="position: relative">
 						</div>
 						<div class="col-6 col-6-narrower col-6-mobilep">
 							<ul>
