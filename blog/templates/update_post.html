@@ -15,24 +15,22 @@
 		<div id="page-wrapper">
 
 			<!-- Header -->
-				<header id="header" class="alt">
-					<nav style="left: 0.75em; right: auto;">
-						<ul>
-							<li>
-								<a><img src="{{ current_user.avatar }}" class="avatar"></a>
-							</li>
-						</ul>
-					</nav>
-					<nav id="nav">
-						<ul>
-							<li><a href="{{ url_for('home') }}">Home</a></li>
-							<li>
-								<a href="{{ url_for('account') }}" class="icon solid">Info</a>
-							</li>
-							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
-						</ul>
-					</nav>
-				</header>
+            <header id="header" class="alt">
+                <nav style="left: 0.75em; right: auto;">
+                    <ul>
+                        <li>
+                            <a><img src="{{ current_user.avatar }}" class="avatar"></a>
+                        </li>
+                    </ul>
+                </nav>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
+                        <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+                    </ul>
+                </nav>
+            </header>
 
 			<!-- Banner -->
 				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
@@ -41,8 +39,8 @@
 
 			<!-- Main -->
 				<section id="main" class="container">
-
 					<section class="box special">
+
                         <!-- Form -->
                         <section class="box">
                             <h3>Blog Form</h3>
@@ -75,19 +73,19 @@
                 </section>
 
 			<!-- Footer -->
-				<footer id="footer">
-					<ul class="icons">
-						<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-						<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-						<li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>&copy; LCM.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</footer>
+            <footer id="footer">
+                <ul class="icons">
+                    <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                    <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                    <li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+                    <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+                    <li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
+                </ul>
+                <ul class="copyright">
+                    <li>&copy; LCM.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                </ul>
+            </footer>
 		</div>
 
 		<!-- Scripts -->

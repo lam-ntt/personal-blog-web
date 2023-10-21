@@ -65,7 +65,7 @@ def save_picture(form_picture):
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(app.root_path, 'static/', picture_fn)
     form_picture.save(picture_path)
-    picture_fn = '..\static\\avatar\\' + picture_fn
+    picture_fn = '..\static\\' + picture_fn
     return picture_fn
 
 @app.route('/account', methods=['GET', 'POST'])
@@ -176,9 +176,6 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
-
-
-
 
 def send_reset_mail(user):
     token = user.get_reset_token()

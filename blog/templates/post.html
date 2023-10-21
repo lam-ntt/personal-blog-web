@@ -28,7 +28,6 @@
 							<li><a href="{{ url_for('home') }}">Home</a></li>
 							{% if current_user.is_authenticated %}
 							<li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
-							{% else %}
 							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
 							{% endif %}
 						</ul>
@@ -49,7 +48,7 @@
 				<section id="main" class="container">
 
 <!--                Flash-->
-                <div style="text-align: center;">
+                <div class="text-center">
                     <div>
                         {% with messages = get_flashed_messages(with_categories=true) %}
                             {% for category, message in messages %}
