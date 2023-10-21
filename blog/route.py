@@ -65,7 +65,7 @@ def save_picture(form_picture):
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(app.root_path, 'static/', picture_fn)
     form_picture.save(picture_path)
-    picture_fn = '..\static\\' + picture_fn
+    picture_fn = '..\static\\avatar\\' + picture_fn
     return picture_fn
 
 @app.route('/account', methods=['GET', 'POST'])
@@ -92,7 +92,7 @@ def update_account():
         if form.avatar.data:
             current_user.avatar = save_picture(form.avatar.data)
         if form.image_cover.data:
-            current_user.image_cover = save_picture(form.image_cover.data)
+            current_user.image_cover = form.image_cover.data
         db.session.commit()
         flash('You account info has been updated!', 'success')
         return redirect(url_for('account'))
@@ -106,7 +106,7 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data,
-                    image_cover=save_picture(form.image_cover.data))
+                    image_cover=form.image_cover.data)
         db.session.add(post)
         db.session.commit()
 
@@ -158,7 +158,7 @@ def update_post(post_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
-        post.image_cover = save_picture(form.image_cover.data)
+        post.image_cover = form.image_cover.data
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id))

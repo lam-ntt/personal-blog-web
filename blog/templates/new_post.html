@@ -29,7 +29,7 @@
 							<li>
 								<a href="{{ url_for('account') }}" class="icon solid">Info</a>
 							</li>
-							<li><a href="{{ url_for('logout') }}" class="button">Log In</a></li>
+							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
 						</ul>
 					</nav>
 				</header>
@@ -53,12 +53,10 @@
                                         <p>{{ form.title.label }}</p>
 										{{ form.title }}
                                     </div>
-                                    <div class="col-6 col-12-mobilep">
+                                    <div class="col-12 col-12-mobilep">
                                         <p>{{ form.image_cover.label }}</p>
+										{{ form.image_cover }}
                                     </div>
-									<div class="col-6 col-12-mobilep">
-										<p>{{ form.image_cover }}</p>
-									</div>
 									<div class="col-12 col-12-mobilep">
                                         <p>{{ form.content.label }}</p>
 										{{ form.content }}
