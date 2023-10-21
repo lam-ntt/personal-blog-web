@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Blog - Log in</title>
+		<title>Blog - Update Post</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../static/assets/css/main.css" />
@@ -16,18 +16,27 @@
 
 			<!-- Header -->
 				<header id="header" class="alt">
+					<nav style="left: 0.75em; right: auto;">
+						<ul>
+							<li>
+								<a><img src="{{ current_user.avatar }}" class="avatar"></a>
+							</li>
+						</ul>
+					</nav>
 					<nav id="nav">
 						<ul>
 							<li><a href="{{ url_for('home') }}">Home</a></li>
-							<li><a href="{{ url_for('signup') }}" class="button">Sign Up</a></li>
+							<li>
+								<a href="{{ url_for('account') }}" class="icon solid">Info</a>
+							</li>
+							<li><a href="{{ url_for('logout') }}" class="button">Log In</a></li>
 						</ul>
 					</nav>
 				</header>
 
 			<!-- Banner -->
-				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/2465877/pexels-photo-2465877.jpeg?auto=compress&cs=tinysrgb&w=1300');">
-					<h2><b style="color: white;">Log In</b></h2>
-					<h2><b style="color: black;">Welcome Back!</b></h2>
+				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
+					<h2><b style="color: white;">Update Blog</b></h2>
 				</section>
 
 			<!-- Main -->
@@ -36,35 +45,29 @@
 					<section class="box special">
                         <!-- Form -->
                         <section class="box">
-                            <h3>Log in Form</h3>
-                            <form method="post" action="{{ url_for('login') }}">
+                            <h3>Blog Form</h3>
+                            <form method="post" action="{{ url_for('update_post', post_id=post_id) }}" enctype="multipart/form-data">
 								{{ form.hidden_tag() }}
                                 <div class="row gtr-uniform gtr-50">
-									<div class="col-12 col-12-mobilep">
-										<div class="col-lg-8 col-md-10 mx-auto content">
-											<div>
-												{% with messages = get_flashed_messages(with_categories=true) %}
-													{% for category, message in messages %}
-														<div class="alert alert-{{ category }}">
-															{{ message }}
-														</div>
-													{% endfor %}
-												{% endwith %}
-											</div>
-										</div>
-									</div>
                                     <div class="col-12 col-12-mobilep">
-										<p>{{ form.email.label }}</p>
-										{{ form.email }}
+                                        <p>{{ form.title.label }}</p>
+										{{ form.title }}
                                     </div>
-                                    <div class="col-12 col-12-mobilep">
-										<p>{{ form.password.label }}</p>
-										{{ form.password }}
-										<p><a href="{{ url_for('reset_request') }}">Forgot password?</a></p>
+                                    <div class="col-6 col-12-mobilep">
+                                        <p>{{ form.image_cover.label }}</p>
+                                    </div>
+									<div class="col-6 col-12-mobilep">
+										<p>{{ form.image_cover }}</p>
+									</div>
+									<div class="col-12 col-12-mobilep">
+                                        <p>{{ form.content.label }}</p>
+										{{ form.content }}
+										{{ ckeditor.load() }}
+ 										{{ ckeditor.config(name='content') }}
                                     </div>
                                     <div class="col-12">
                                         <ul class="actions">
-											{{ form.submit }}
+                                            {{ form.submit }}
                                         </ul>
                                     </div>
                                 </div>

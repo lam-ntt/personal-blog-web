@@ -6,17 +6,10 @@
 -->
 <html>
 	<head>
-		<title>Blog - Log in</title>
+		<title>Blog - New Post</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../static/assets/css/main.css" />
-        <script src="../tinymce/js/tinymce/tinymce.min.js"></script>
-		<script>
-			tinymce.init({
-				selector: "#textEditor",
-				height: 400
-			});
-		</script>
 	</head>
 	<body class="landing is-preload">
 		<div id="page-wrapper">
@@ -26,7 +19,7 @@
 					<nav style="left: 0.75em; right: auto;">
 						<ul>
 							<li>
-								<a><img src="../avatar/test.jpeg" class="avatar"></a>
+								<a><img src="{{ current_user.avatar }}" class="avatar"></a>
 							</li>
 						</ul>
 					</nav>
@@ -75,7 +68,6 @@
                                     <div class="col-12">
                                         <ul class="actions">
                                             {{ form.submit }}
-                                            <li><input type="reset" value="Reset" class="alt" /></li>
                                         </ul>
                                     </div>
                                 </div>

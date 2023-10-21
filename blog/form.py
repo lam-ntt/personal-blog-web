@@ -35,8 +35,8 @@ class LoginForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     bio = StringField('Biography')
-    avatar = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
-    image_cover = FileField('Cover Picture', validators=[FileAllowed(['jpg', 'png'])])
+    avatar = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    image_cover = FileField('Cover Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Update')
 
     def validate_email(self, email):
@@ -54,11 +54,11 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = CKEditorField('Content', validators=[DataRequired()])
-    image_cover = FileField('Cover Picture', validators=[DataRequired()])
+    image_cover = FileField('Cover Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Post')
 
 class CommentForm(FlaskForm):
-    content = CKEditorField('Content', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
     
 class RequestForm(FlaskForm):

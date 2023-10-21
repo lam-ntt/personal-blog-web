@@ -124,13 +124,13 @@ def new_post():
 def post(post_id):
     post = Post.query.filter_by(id=post_id).first()
 
-    author_state = State.query.filter_by(is_author=True,post_id=post.id).first()
+    author_state = State.query.filter_by(is_author=True, post_id=post.id).first()
     author = User.query.filter_by(id=author_state.user_id).first() # a user
 
     commenter_state = State.query.filter_by(is_author=False, post_id=post.id)
     commenter = [] # a list of users
     for state in commenter_state:
-        commenter.append(User.query.filter_by(id=state.user_id))
+        commenter += User.query.filter_by(id=state.user_id).all()
 
     if current_user.id == author_state.user_id: is_authen=True
     else: is_authen=False
@@ -162,17 +162,14 @@ def update_post(post_id):
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id))
-    else:
-        # Hien thi thong tin cu cua bai dang
-        pass
-    return render_template('new_post.html', form=form)
+    return render_template('update_post.html', post_id=post.id, form=form)
 
 
 @app.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_post(post_id):
     post = Post.query.filter_by(id=post_id).first()
-    states = State.query.filter(post_id=post.id)
+    states = State.query.filter_by(post_id=post.id)
     for state in states:
         db.session.delete(state)
     db.session.delete(post)

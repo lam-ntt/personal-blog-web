@@ -47,6 +47,20 @@
 
 			<!-- Main -->
 				<section id="main" class="container">
+
+<!--                Flash-->
+                <div style="text-align: center;">
+                    <div>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
+                </div>
+
 				<!--Blog-->
 					<div style="margin: 20% 10% 0% 10%">
 					  <p>
@@ -77,7 +91,6 @@
 							 <div class="col-12" style="margin: 3% 0;">
 								<ul class="actions">
 									{{ form.submit }}
-									<li><input type="reset" value="Reset" class="alt" /></li>
 								</ul>
 							</div>
 						</form>
