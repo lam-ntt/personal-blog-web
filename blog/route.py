@@ -143,7 +143,9 @@ def post(post_id):
         db.session.commit()
 
     return render_template('post.html', form=form, author=author, post=post,
-                           commenter=commenter[::-1], commenter_state=commenter_state[::-1], is_authen=is_authen)
+                           commenter=commenter[::-1],
+                           commenter_state=commenter_state[::-1],
+                           is_authen=is_authen)
 
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
@@ -185,6 +187,7 @@ def send_reset_mail(user):
 { url_for('reset_password', token=token, _external=True) } 
 If you did not make this request then simply ignore this email and no change will be made.
 '''
+    mail.connect()
     mail.send(msg)
 
 
