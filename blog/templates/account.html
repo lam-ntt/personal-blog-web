@@ -36,7 +36,7 @@
 				</header>
 
 			<!-- Banner -->
-				<section id="banner">
+				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('{{ current_user.image_cover }}');">
 					<h2><b style="color: white;">{{ current_user.username }}'s Blog</b></h2>
 				</section>
 
@@ -107,7 +107,7 @@
 									<tbody>
 									{% for post in posts: %}
 										<tr>
-											<td>{{ post.title }}</td>
+											<td><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></td>
 											<td><a href="{{ url_for('delete_post', post_id=post.id) }}">✘</a></td>
 										</tr>
 									{% endfor %}

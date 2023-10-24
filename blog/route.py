@@ -83,13 +83,13 @@ def update_account():
     form = UpdateAccountForm(
         username=current_user.username,
         bio=current_user.bio,
-        avatar=current_user.avatar,
         image_cover=current_user.image_cover
     )
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.bio = form.bio.data
         if form.avatar.data:
+            print(form.avatar.data)
             current_user.avatar = save_picture(form.avatar.data)
         if form.image_cover.data:
             current_user.image_cover = form.image_cover.data
