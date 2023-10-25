@@ -9,6 +9,12 @@ from blog.model import User, Post, State
 from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
 
 
+def get_author(post):
+    state = State.query.filter_by(is_author=True, post_id=post.id).first()
+    author = User.query.filter_by(id=state.user_id).first()
+    return author
+
+
 @app.route('/')
 @app.route('/home')
 def home():
@@ -19,7 +25,10 @@ def home():
 @app.route('/admin')
 def admin():
     posts = Post.query.order_by(Post.date.desc()).all()
-    return render_template('admin_account.html', posts=posts)
+    authors = []
+    for post in posts:
+        authors.append(get_author(post))
+    return render_template('admin_account.html', posts=posts, authors=authors)
 
 
 
