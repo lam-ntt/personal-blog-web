@@ -185,6 +185,7 @@ def send_reset_mail(user):
     msg.subject = 'Password Reset Request'
     msg.body = f'''To reset your password, visit the following link: 
 { url_for('reset_password', token=token, _external=True) } 
+
 If you did not make this request then simply ignore this email and no change will be made.
 '''
     mail.connect()
@@ -195,7 +196,7 @@ If you did not make this request then simply ignore this email and no change wil
 def reset_request():
     form = RequestForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data)
+        user = User.query.filter_by(email=form.email.data).first()
         send_reset_mail(user)
         flash('An email has been sent with instructions to reset your password', 'success')
         return redirect(url_for('login'))
@@ -216,3 +217,5 @@ def reset_password(token):
         flash('Your password has been updated. You are now able to login', 'success')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+

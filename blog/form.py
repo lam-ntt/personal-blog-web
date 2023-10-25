@@ -67,13 +67,13 @@ class RequestForm(FlaskForm):
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
-        if user:
-            if user.email == email: return
-            else: raise ValidationError('This email is not linked to any account. Please register first')
+        if user is None:
+            raise ValidationError('This email is not linked to any account. Please register first')
 
 class ResetForm(FlaskForm):
     password = StringField('Password', validators=[DataRequired()])
-    confirm_password = StringField('Password', validators=[DataRequired(), EqualTo('password')])
+    confirm_password = StringField('Confirm Password', validators=[
+        DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset')
 
 

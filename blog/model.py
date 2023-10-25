@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from itsdangerous import URLSafeSerializer as Serializer
+
 
 from blog import db, login_manager, app
 from flask_login import UserMixin
@@ -31,11 +32,12 @@ class User(db.Model, UserMixin):
     @staticmethod
     def verify_reset_token(token):
         s = Serializer(app.config['SECRET_KEY'])
-        try: 
-            user_id = s.loads(token)['user_id']
+        try:
+          user_id = s.loads(token)['user_id']
         except:
-            return None
+          return None
         return User.query.get(user_id)
+
 
 
 class State(db.Model):
