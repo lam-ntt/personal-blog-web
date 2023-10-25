@@ -25,11 +25,11 @@
 					</nav>
 					<nav id="nav">
 						<ul>
-							<li><a href="index.html">Home</a></li>
+							<li><a href="{{ url_for('home') }}">Home</a></li>
 							<li>
-								<a href="admin_home.html" class="icon solid">Info</a>
+								<a href="{{ url_for('account') }}" class="icon solid">Info</a>
 							</li>
-							<li><a href="#" class="button">Log Out</a></li>
+							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
 						</ul>
 					</nav>
 				</header>
@@ -63,7 +63,7 @@
 										<tr>
 											<td>Something</td>
 											<td>Something</td>
-											<td><a hef="#">✘</a></td>
+											<td><a hef="{{ {{ url_for('delete_post', post_id=post.id) }} }}">✘</a></td>
 										</tr>
 									</tbody>
 								</table>

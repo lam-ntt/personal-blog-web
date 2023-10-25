@@ -78,7 +78,7 @@
                         {{ post.title }}
                     </h2>
                     </a>
-                    <i>Posted on {{ post.date }}</i>
+                    <i>Posted on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}</i>
                 </div>
                 {% endfor %}
 
