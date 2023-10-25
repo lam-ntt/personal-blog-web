@@ -19,7 +19,7 @@ def home():
 @app.route('/admin')
 def admin():
     posts = Post.query.order_by(Post.date.desc()).all()
-    return render_template('admin.html', posts=posts)
+    return render_template('admin_account.html', posts=posts)
 
 
 
