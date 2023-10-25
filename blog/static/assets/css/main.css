@@ -3032,6 +3032,10 @@
 						position: relative;
 					}
 
+					#header nav > ul > li > a > img {
+					    margin: 5% 0 0 0;
+					}
+
 		#header input[type="submit"],
 		#header input[type="reset"],
 		#header input[type="button"],

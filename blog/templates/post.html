@@ -39,7 +39,7 @@
 					<h2><b style="color: white;">{{ post.title }}</b></h2>
                     <p>
                       <i>Posted by
-                      <a href="#">{{ author.username }}</a> on {{ post.date }}
+                      <a href="#">{{ author.username }}</a> on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}
                       </i>
                     </p>
 				</section>
