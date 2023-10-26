@@ -44,7 +44,7 @@
                         <!-- Form -->
                         <section class="box">
                             <h3>Blog Form</h3>
-                            <form method="post" action="{{ url_for('update_post', post_id=post_id) }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ url_for('update_post', post_id=post.id) }}" enctype="multipart/form-data">
 								{{ form.hidden_tag() }}
                                 <div class="row gtr-uniform gtr-50">
                                     <div class="col-12 col-12-mobilep">

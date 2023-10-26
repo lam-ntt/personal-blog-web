@@ -60,11 +60,13 @@
 										</tr>
 									</thead>
 									<tbody>
+									{% for i in posts|length: %}
 										<tr>
-											<td>Something</td>
-											<td>Something</td>
-<!--											<td><a hef="{{ {{ url_for('delete_post', post_id=post.id) }} }}">✘</a></td>-->
+											<td><a href="{{ url_for('post', post_id=posts[i].id }}">{{ posts[i].title }}</a></td>
+											<td>{{ authors[i] }}</td>
+											<td><a hef="{{ url_for('delete_post', post_id=posts[i].id) }}">✘</a></td>
 										</tr>
+									{% endfor %}
 									</tbody>
 								</table>
 							</div>

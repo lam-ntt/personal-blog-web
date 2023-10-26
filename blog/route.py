@@ -66,8 +66,6 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-
-
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -157,9 +155,10 @@ def post(post_id):
                            is_authen=is_authen)
 
 
-@app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
+@app.route('/post/update', methods=['GET', 'POST'])
 @login_required
-def update_post(post_id):
+def update_post():
+    post_id = request.args.get('post_id')
     post = Post.query.filter_by(id=post_id).first()
     form = PostForm(
         title=post.title,
@@ -173,7 +172,7 @@ def update_post(post_id):
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id))
-    return render_template('update_post.html', post_id=post.id, form=form)
+    return render_template('update_post.html', post=post, form=form)
 
 
 @app.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
