@@ -30,8 +30,12 @@
                     <ul>
                         <li><a href="{{ url_for('home') }}">Home</a></li>
                         {% if current_user.is_authenticated: %}
-                        <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
-                        <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+                            {% if current_user.rank_id == 1: %}
+                            <li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
+                            {% else: %}
+                            <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
+                            {% endif %}
+                            <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
                         {% endif %}
                     </ul>
                 </nav>

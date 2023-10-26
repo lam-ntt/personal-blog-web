@@ -1,13 +1,23 @@
 import os, secrets # image processing
 
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_mail import Message
+from functools import wraps
 
 from blog import app, db, bcrypt, mail
 from blog.model import User, Post, State
 from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
 
+
+#Create admin-only decorator
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.rank_id != 1:
+            return render_template('forbidden.html')
+        return f(*args, **kwargs)
+    return decorated_function
 
 def get_author(post):
     state = State.query.filter_by(is_author=True, post_id=post.id).first()
@@ -23,6 +33,8 @@ def home():
     return render_template('index.html', posts=posts)
 
 @app.route('/admin')
+@login_required
+@admin_only
 def admin():
     posts = Post.query.order_by(Post.date.desc()).all()
     authors = []

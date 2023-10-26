@@ -27,7 +27,7 @@
 						<ul>
 							<li><a href="{{ url_for('home') }}">Home</a></li>
 							<li>
-								<a href="{{ url_for('account') }}" class="icon solid">Info</a>
+								<a href="{{ url_for('admin') }}" class="icon solid">Info</a>
 							</li>
 							<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
 						</ul>
@@ -38,6 +38,36 @@
 				<section id="banner">
 					<h2><b style="color: white;">Admin's Blog</b></h2>
 				</section>
+
+			<!-- Info of Admin -->
+				<section class="container" id="bio">
+					<section class="box special">
+						<header class="major">
+							<h2>Introduction</h2>
+						</header>
+					</section>
+					<div class="row">
+						<div class="col-6 col-6-narrower col-6-mobilep">
+							<img src="{{ current_user.avatar }}" width="70%" height="auto" style="position: relative">
+						</div>
+						<div class="col-6 col-6-narrower col-6-mobilep">
+							<ul>
+								<li><p><b>Name: </b> {{ current_user.username  }}</p></li>
+								<li><p><b>Email: </b> {{ current_user.email }}</p></li>
+								<li><p><b>Biography: </b> {{ current_user.bio }}</p></li>
+							</ul>
+						</div>
+					</div>
+
+					<hr>
+                    <div class="col-12" style="margin: 0 0 0 10%">
+                    <ul class="actions">
+                        <li><a href="{{ url_for('update_account') }}" class="button special">Update Account</a></li>
+                    </ul>
+                    </div>
+					<hr>
+				</section>
+			    <hr>
 
 			<!-- Main -->
 				<section id="main" class="container">
@@ -60,10 +90,10 @@
 										</tr>
 									</thead>
 									<tbody>
-									{% for i in posts|length: %}
+									{% for i in range(posts|length): %}
 										<tr>
-											<td><a href="{{ url_for('post', post_id=posts[i].id }}">{{ posts[i].title }}</a></td>
-											<td>{{ authors[i] }}</td>
+											<td><a href="{{ url_for('post', post_id=posts[i].id) }}">{{ posts[i].title }}</a></td>
+											<td>{{ authors[i].username }}</td>
 											<td><a hef="{{ url_for('delete_post', post_id=posts[i].id) }}">✘</a></td>
 										</tr>
 									{% endfor %}
