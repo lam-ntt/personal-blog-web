@@ -1,8 +1,12 @@
-# Personal_Blog_Web
-***Project of Group Lam, Cuong, Mai***
+# Personal Blog Web
+***Bài tập lớn Python Nhóm 1***
 
 ## 1. Database
+<img alt="database" src="images_in_README/database.png"/>
 
-<img alt="example" src="images_in_README/database.png"/>
+## 2. User Case Diagram
+<img alt="usercase" src="images_in_README/UserCase.png"/>
 
-## 2. OOP
+## 3. Đăng ký
+<img alt="signup" src="images_in_README/SignUp.png"/>
+
