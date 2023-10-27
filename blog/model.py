@@ -55,7 +55,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now())
     image_cover = db.Column(db.String(20), default="..\static\default_image_cover.jpg")
     post_rela = db.relationship('State', backref=db.backref('post', lazy=True))
 

@@ -113,7 +113,7 @@ def update_account():
         if form.image_cover.data:
             current_user.image_cover = form.image_cover.data
         db.session.commit()
-        flash('You account info has been updated!', 'success')
+        flash('Your account info has been updated!', 'success')
         return redirect(url_for('account'))
     return render_template('update_account.html', form=form)
 

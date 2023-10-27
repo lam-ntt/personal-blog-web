@@ -12,7 +12,7 @@ app = Flask( __name__ )
 app.config["SECRET_KEY"] = "r$qAjWhNN{GXD?x/ncd1xYd/t"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.permanent_session_lifetime = timedelta(minutes=1)
+app.permanent_session_lifetime = timedelta(minutes=30)
 app.app_context().push()
 
 db = SQLAlchemy(app)
