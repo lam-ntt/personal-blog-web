@@ -10,6 +10,7 @@ on:
       - '!docs/**'
       - '**.py'
       - '**.html'
+      - '**.db'
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
