@@ -1,6 +1,6 @@
 # Personal Blog Web
 ***Bài tập lớn Python Nhóm 1***
-<a href="https://projectblogweb-python.onrender.com">Link to show this project</a>
+***<a href="https://projectblogweb-python.onrender.com">Link to show this project</a>***
 
 ## 1. Database
 <img alt="database" src="images_in_README/database.png"/>
