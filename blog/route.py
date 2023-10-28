@@ -24,7 +24,7 @@ def owner_only(f):
     def decorated_function(*args, **kwargs):
         post_id = request.args.get('post_id')
         author_state = State.query.filter_by(is_author=True, post_id=post_id).first()
-        if current_user.rank_id != author_state.user_id:
+        if current_user.id != author_state.user_id:
             return render_template('forbidden.html')
         return f(*args, **kwargs)
     return decorated_function
