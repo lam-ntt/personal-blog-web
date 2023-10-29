@@ -41,13 +41,13 @@
 								<div class="col-12 col-12-mobilep">
 									<div class="col-lg-8 col-md-10 mx-auto content">
 										<div>
-											{% with messages = get_flashed_messages(with_categories=true) %}
-												{% for category, message in messages %}
-													<div class="alert alert-{{ category }}">
-														{{ message }}
-													</div>
-												{% endfor %}
-											{% endwith %}
+										{% with messages = get_flashed_messages(with_categories=true) %}
+											{% for category, message in messages %}
+												<div class="alert alert-{{ category }}">
+													{{ message }}
+												</div>
+											{% endfor %}
+										{% endwith %}
 										</div>
 									</div>
 								</div>
@@ -58,11 +58,11 @@
 								<div class="col-12 col-12-mobilep">
 									<p>{{ form.password.label }}</p>
 									{{ form.password }}
-									<p><a href="{{ url_for('reset_request') }}">Forgot password?</a></p>
 								</div>
-								<div class="col-12">
+								<div class="col-12" style="margin: 0 0 0 0">
 									<ul class="actions">
-										{{ form.submit }}
+										<li><a class="button special">{{ form.submit }}</a></li>
+										<li><a href="{{ url_for('reset_request') }}" class="button alt">Forgot Password</a></li>
 									</ul>
 								</div>
 							</div>
