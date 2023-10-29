@@ -13,145 +13,139 @@
 	</head>
 	<body class="landing is-preload">
 		<div id="page-wrapper">
-
 			<!-- Header -->
-				<header id="header" class="alt">
-					<nav style="left: 0.75em; right: auto;">
-						<ul>
-							<li>
-								<a><img src="{{ current_user.avatar }}" class="avatar"></a>
-							</li>
-						</ul>
-					</nav>
-					<nav id="nav">
-						<ul>
-							<li><a href="{{ url_for('home') }}">Home</a></li>
+			<header id="header" class="alt">
+				<nav style="left: 0.75em; right: auto;">
+					<ul>
+						<li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
+					</ul>
+				</nav>
+				<nav id="nav">
+					<ul>
+						<li><a href="{{ url_for('home') }}">Home</a></li>
 							{% if current_user.rank_id == 1: %}
-                            <li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
-                            {% else: %}
-                            <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
-                            {% endif %}
-                            <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
-						</ul>
-					</nav>
-				</header>
+						<li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
+							{% else: %}
+						<li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
+							{% endif %}
+						<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+					</ul>
+				</nav>
+			</header>
 
 			<!-- Banner -->
-				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('{{ post.image_cover }}');">
-					<h2><b style="color: white;">{{ post.title }}</b></h2>
-                    <p>
-                      <i>Posted by
-                      <a href="#">{{ author.username }}</a> on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}
-                      </i>
-                    </p>
-				</section>
+			<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('{{ post.image_cover }}');">
+				<h2><b style="color: white;">{{ post.title }}</b></h2>
+				<p>
+				  <i>Posted by
+				  <a href="#">{{ author.username }}</a> on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}
+				  </i>
+				</p>
+			</section>
 
 			<!-- Main -->
-				<section id="main" class="container">
-					<section class="box special">
-						<header class="major">
-							<h2>{{ post.title }}</h2>
-						</header>
-					</section>
-
-<!--                Flash-->
-                <div class="text-center">
-                    <div>
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        {% endwith %}
-                    </div>
-                </div>
-
-				<!--Blog-->
-					<div style="margin: 0% 10% 0% 10%">
-					  <p>
-						  {{ post.content|safe }}
-					  </p>
-					</div>
-
-					<hr>
-					{% if is_authen %}
-                    <div class="col-12" style="margin: 0 0 0 10%">
-                    <ul class="actions">
-                        <li><a href="{{ url_for('update_post', post_id=post.id) }}" class="button special">Update Post</a></li>
-                    </ul>
-                    </div>
-                	</hr>
-					{% endif %}
-				<!--Comment-->
-					{% if current_user.is_authenticated %}
-					<div style="margin: 0% 10% 0% 10%">
-						<h3>Comment</h3>
-						<form method="post" action="{{ url_for('post', post_id=post.id) }}">
-							{{ form.hidden_tag() }}
-							<div class="row gtr-uniform gtr-50">
-								<div class="col-12 col-12-mobilep">
-									{{ form.content }}
-								</div>
-							</div>
-							 <div class="col-12" style="margin: 3% 0;">
-								<ul class="actions">
-									{{ form.submit }}
-								</ul>
-							</div>
-						</form>
-					</div>
-					<hr>
-					{% endif %}
-<!--					All comments about the post-->
-					<div class="container text-left row-gap-3">
-						<div>
-							{% for i in range(commenter| length): %}
-							<div class="row">
-								<div class="col-2">
-									<img src="{{ commenter[i].avatar }}" class="avatar" align="right">
-								</div>
-								<div class="col-8">
-									<h3>{{ commenter[i].username }}</h3>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-2">
-								</div>
-								<div class="col-8">
-									<p>{{ commenter_state[i].comment }}</p>
-								</div>
-							</div>
-							{% endfor %}
-						</div>
-					</div>
+			<section id="main" class="container">
+				<section class="box special">
+					<header class="major">
+						<h2>{{ post.title }}</h2>
+					</header>
 				</section>
 
+				<!--Flash-->
+				<div class="text-center">
+					<div>
+					{% with messages = get_flashed_messages(with_categories=true) %}
+						{% for category, message in messages %}
+							<div class="alert alert-{{ category }}">
+								{{ message }}
+							</div>
+						{% endfor %}
+					{% endwith %}
+					</div>
+				</div>
+
+				<!--Blog-->
+				<div style="margin: 0% 10% 0% 10%">
+				  <p>{{ post.content|safe }}</p>
+				</div>
+				<hr>
+				{% if is_authen %}
+				<div class="col-12" style="margin: 0 0 0 10%">
+					<ul class="actions">
+						<li><a href="{{ url_for('update_post', post_id=post.id) }}" class="button special">Update Post</a></li>
+					</ul>
+				</div>
+				</hr>
+				{% endif %}
+
+				<!--Comment-->
+				{% if current_user.is_authenticated %}
+				<div style="margin: 0% 10% 0% 10%">
+					<h3>Comment</h3>
+					<form method="post" action="{{ url_for('post', post_id=post.id) }}">
+						{{ form.hidden_tag() }}
+						<div class="row gtr-uniform gtr-50">
+							<div class="col-12 col-12-mobilep">
+								{{ form.content }}
+							</div>
+							<div class="col-12" style="margin: 3% 0;">
+								{{ form.submit }}
+							</div>
+						</div>
+					</form>
+				</div>
+				<hr>
+				{% endif %}
+
+				<!--All comments about the post-->
+				<div class="container text-left row-gap-3">
+					<div>
+						{% for i in range(commenter| length): %}
+						<div class="row">
+							<div class="col-2">
+								<img src="{{ commenter[i].avatar }}" class="avatar" align="right">
+							</div>
+							<div class="col-8">
+								<h3>{{ commenter[i].username }}</h3>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-2">
+							</div>
+							<div class="col-8">
+								<p>{{ commenter_state[i].comment }}</p>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</section>
+
 			<!-- Footer -->
-				<footer id="footer">
-					<ul class="icons">
-						<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-						<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-						<li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>&copy; LCM.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</footer>
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+					<li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; LCM.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</footer>
 
 		</div>
 
 		<!-- Scripts -->
-			<script src="../static/assets/js/jquery.min.js"></script>
-			<script src="../static/assets/js/jquery.dropotron.min.js"></script>
-			<script src="../static/assets/js/jquery.scrollex.min.js"></script>
-			<script src="../static/assets/js/browser.min.js"></script>
-			<script src="../static/assets/js/breakpoints.min.js"></script>
-			<script src="../static/assets/js/util.js"></script>
-			<script src="../static/assets/js/main.js"></script>
+		<script src="../static/assets/js/jquery.min.js"></script>
+		<script src="../static/assets/js/jquery.dropotron.min.js"></script>
+		<script src="../static/assets/js/jquery.scrollex.min.js"></script>
+		<script src="../static/assets/js/browser.min.js"></script>
+		<script src="../static/assets/js/breakpoints.min.js"></script>
+		<script src="../static/assets/js/util.js"></script>
+		<script src="../static/assets/js/main.js"></script>
 
 	</body>
 </html>

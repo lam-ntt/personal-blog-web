@@ -13,16 +13,12 @@
 	</head>
 	<body class="landing is-preload">
 		<div id="page-wrapper">
-
 			<!-- Header -->
             <header id="header" class="alt">
-
                 {% if current_user.is_authenticated: %}
                 <nav style="left: 0.75em; right: auto;">
                     <ul>
-                        <li>
-                            <a><img src="{{ current_user.avatar }}" class="avatar"></a>
-                        </li>
+                        <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
                     </ul>
                 </nav>
                 {% endif %}
@@ -66,35 +62,49 @@
                     <div>
                         {% with messages = get_flashed_messages(with_categories=true) %}
                             {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}">
-                                    {{ message }}
-                                </div>
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
                             {% endfor %}
                         {% endwith %}
                     </div>
                 </div>
+                {% if current_user.is_authenticated %}
+                <div class="col-12" style="margin: 0 0 0 10%">
+                    <ul class="actions">
+                        <li><a href="{{ url_for('new_post') }}" class="button special">Create Post</a></li>
+                    </ul>
+                </div>
+                <hr>
+                {% endif %}
 
                 <!--Blog-->
                 {% for post in posts: %}
                 <div style="margin: 10%">
                     <a href="{{ url_for('post', post_id=post.id) }}">
-                    <h2>
-                        {{ post.title }}
-                    </h2>
+                        <h2>{{ post.title }}</h2>
                     </a>
                     <i>Posted on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}</i>
                 </div>
                 {% endfor %}
 
-                {% if current_user.is_authenticated %}
                 <hr>
-                    <div class="col-12" style="margin: 0 0 0 10%">
+
+                <div class="col-12" style="margin: 0 0 0 35%">
                     <ul class="actions">
-                        <li><a href="{{ url_for('new_post') }}" class="button special">Create Post</a></li>
+                    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
+                        {% if page_num %}
+                            {% if posts.page == page_num %}
+                               <li><a href="{{ url_for('home', page=page_num) }}" class="button alt">{{ page_num }}</a></li>
+                            {% else %}
+                               <li><a href="{{ url_for('home', page=page_num) }}" class="button special">{{ page_num }}</a></li>
+                            {% endif %}
+                        {% else %}
+                        ...
+                        {% endif %}
+                    {% endfor %}
                     </ul>
-                    </div>
-                {% endif %}
-                </hr>
+                </div>
             </section>
 
 			<!-- Footer -->

@@ -13,68 +13,64 @@
 	</head>
 	<body class="landing is-preload">
 		<div id="page-wrapper">
-
 			<!-- Header -->
             <header id="header" class="alt">
                 <nav style="left: 0.75em; right: auto;">
                     <ul>
-                        <li>
-                            <a><img src="{{ current_user.avatar }}" class="avatar"></a>
-                        </li>
+                        <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
                     </ul>
                 </nav>
                 <nav id="nav">
                     <ul>
                         <li><a href="{{ url_for('home') }}">Home</a></li>
                         {% if current_user.rank_id == 1: %}
-                        <li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
+                            <li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
                         {% else: %}
-                        <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
+                            <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
                         {% endif %}
-                        <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+                            <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
                     </ul>
                 </nav>
             </header>
 
 			<!-- Banner -->
-				<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
-					<h2><b style="color: white;">Create Blog</b></h2>
-				</section>
+            <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
+                <h2><b style="color: white;">Create Blog</b></h2>
+            </section>
 
 			<!-- Main -->
-				<section id="main" class="container">
-
-					<section class="box special">
-                        <!-- Form -->
-                        <section class="box">
-                            <h3>Blog Form</h3>
-                            <form method="post" action="{{ url_for('new_post') }}" enctype="multipart/form-data">
-								{{ form.hidden_tag() }}
-                                <div class="row gtr-uniform gtr-50">
-                                    <div class="col-12 col-12-mobilep">
-                                        <p>{{ form.title.label }}</p>
-										{{ form.title }}
-                                    </div>
-                                    <div class="col-12 col-12-mobilep">
-                                        <p>{{ form.image_cover.label }}</p>
-										{{ form.image_cover }}
-                                    </div>
-									<div class="col-12 col-12-mobilep">
-                                        <p>{{ form.content.label }}</p>
-										{{ form.content }}
-										{{ ckeditor.load() }}
- 										{{ ckeditor.config(name='content') }}
-                                    </div>
-                                    <div class="col-12">
-                                        <ul class="actions">
-                                            {{ form.submit }}
-                                        </ul>
-                                    </div>
+            <section id="main" class="container">
+                <section class="box special">
+                    <!-- Form -->
+                    <section class="box">
+                        <h3>Blog Form</h3>
+                        <form method="post" action="{{ url_for('new_post') }}" enctype="multipart/form-data">
+                            {{ form.hidden_tag() }}
+                            <div class="row gtr-uniform gtr-50">
+                                <div class="col-12 col-12-mobilep">
+                                    <p>{{ form.title.label }}</p>
+                                    {{ form.title }}
                                 </div>
-                            </form>
-                        </section>
+                                <div class="col-12 col-12-mobilep">
+                                    <p>{{ form.image_cover.label }}</p>
+                                    {{ form.image_cover }}
+                                </div>
+                                <div class="col-12 col-12-mobilep">
+                                    <p>{{ form.content.label }}</p>
+                                    {{ form.content }}
+                                    {{ ckeditor.load() }}
+                                    {{ ckeditor.config(name='content') }}
+                                </div>
+                                <div class="col-12">
+                                    <ul class="actions">
+                                        {{ form.submit }}
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
                     </section>
                 </section>
+            </section>
 
 			<!-- Footer -->
             <footer id="footer">
@@ -93,13 +89,13 @@
 		</div>
 
 		<!-- Scripts -->
-			<script src="../static/assets/js/jquery.min.js"></script>
-			<script src="../static/assets/js/jquery.dropotron.min.js"></script>
-			<script src="../static/assets/js/jquery.scrollex.min.js"></script>
-			<script src="../static/assets/js/browser.min.js"></script>
-			<script src="../static/assets/js/breakpoints.min.js"></script>
-			<script src="../static/assets/js/util.js"></script>
-			<script src="../static/assets/js/main.js"></script>
+        <script src="../static/assets/js/jquery.min.js"></script>
+        <script src="../static/assets/js/jquery.dropotron.min.js"></script>
+        <script src="../static/assets/js/jquery.scrollex.min.js"></script>
+        <script src="../static/assets/js/browser.min.js"></script>
+        <script src="../static/assets/js/breakpoints.min.js"></script>
+        <script src="../static/assets/js/util.js"></script>
+        <script src="../static/assets/js/main.js"></script>
 
 	</body>
 </html>
