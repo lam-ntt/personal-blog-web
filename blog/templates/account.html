@@ -60,7 +60,7 @@
 				</section>
 				<div class="row">
 					<div class="col-6 col-6-narrower col-6-mobilep">
-						<img src="{{ current_user.avatar }}" width="70%" height="auto" style="position: relative">
+						<img src="{{ current_user.avatar }}" width="40%" height="auto" style="position: relative; margin-left: 30%;">
 					</div>
 					<div class="col-6 col-6-narrower col-6-mobilep">
 						<ul>
@@ -71,7 +71,7 @@
 					</div>
 				</div>
 				<hr>
-				<div class="col-12" style="margin: 0 0 0 10%">
+				<div class="col-12" style="margin: 0 0 0 16%">
 					<ul class="actions">
 						<li><a href="{{ url_for('update_account') }}" class="button special">Update Account</a></li>
 					</ul>
@@ -85,7 +85,7 @@
 			<section id="main" class="container">
 				<section class="box special">
 					<header class="major">
-						<h2>All {{ current_user.username }}'s Blogs</h2>
+						<h2>All {{ current_user.username }}'s Posts</h2>
 					</header>
 				</section>
 				<div style="margin: 0%">

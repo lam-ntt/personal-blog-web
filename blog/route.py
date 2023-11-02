@@ -171,6 +171,7 @@ def post(post_id):
                       post_id=post.id, comment=form.content.data)
         db.session.add(state)
         db.session.commit()
+        return redirect(url_for("post", post_id=post.id))
 
     return render_template('post.html', form=form, author=author, post=post,
                            commenter=commenter[::-1],
