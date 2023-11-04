@@ -31,7 +31,11 @@ def owner_only(f):
 
 def get_author(post):
     state = State.query.filter_by(is_author=True, post_id=post.id).first()
-    author = User.query.filter_by(id=state.user_id).first()
+    if state==None: #just for window
+        author = User.query.filter_by(id=1).first()
+    else:
+        author = User.query.filter_by(id=state.user_id).first()
+    if author==None: author=User.query.first() #just for window
     return author
 
 
