@@ -57,8 +57,6 @@ def admin():
         authors.append(get_author(post))
     return render_template('admin_account.html', posts=posts, authors=authors)
 
-
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
@@ -112,6 +110,7 @@ def account():
     return render_template('account.html', posts=posts)
 
 @app.route('/account/update', methods=['GET', 'POST'])
+@owner_only
 @login_required
 def update_account():
     form = UpdateAccountForm(
@@ -123,7 +122,6 @@ def update_account():
         current_user.username = form.username.data
         current_user.bio = form.bio.data
         if form.avatar.data:
-            print(form.avatar.data)
             current_user.avatar = save_picture(form.avatar.data)
         if form.image_cover.data:
             current_user.image_cover = form.image_cover.data
@@ -131,8 +129,6 @@ def update_account():
         flash('Your account info has been updated!', 'success')
         return redirect(url_for('account'))
     return render_template('update_account.html', form=form)
-
-
 
 @app.route('/post/new', methods=['GET', 'POST'])
 @login_required
@@ -152,7 +148,6 @@ def new_post():
         return redirect(url_for('home'))
     return render_template('new_post.html', form=form)
 
-
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 @login_required
 def post(post_id):
@@ -162,9 +157,9 @@ def post(post_id):
     author = User.query.filter_by(id=author_state.user_id).first() # a user
 
     commenter_state = State.query.filter_by(is_author=False, post_id=post.id)
-    commenter = [] # a list of users
+    commenter = [] 
     for state in commenter_state:
-        commenter += User.query.filter_by(id=state.user_id).all()
+        commenter += User.query.filter_by(id=state.user_id).all() # a list of users
 
     if current_user.id == author_state.user_id: is_authen=True
     else: is_authen=False
@@ -176,12 +171,10 @@ def post(post_id):
         db.session.add(state)
         db.session.commit()
         return redirect(url_for("post", post_id=post.id))
-
-    return render_template('post.html', form=form, author=author, post=post,
+    return render_template('post.html', form=form, post=post, author=author, 
                            commenter=commenter[::-1],
                            commenter_state=commenter_state[::-1],
                            is_authen=is_authen)
-
 
 @app.route('/post/update', methods=['GET', 'POST'])
 @owner_only
@@ -194,6 +187,7 @@ def update_post():
         content=post.content,
         image_cover=post.image_cover
     )
+
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
@@ -205,6 +199,7 @@ def update_post():
 
 
 @app.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
+@owner_only
 @login_required
 def delete_post(post_id):
     post = Post.query.filter_by(id=post_id).first()
@@ -227,7 +222,6 @@ If you did not make this request then simply ignore this email and no change wil
 '''
     mail.connect()
     mail.send(msg)
-
 
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():

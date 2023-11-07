@@ -22,6 +22,7 @@
                     </ul>
                 </nav>
                 {% endif %}
+
                 <nav id="nav">
                     <ul>
                         <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -57,7 +58,7 @@
                     </header>
                 </section>
 
-<!--                Flash-->
+                <!--Flash-->
                 <div class="text-center">
                     <div>
                         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -69,6 +70,7 @@
                         {% endwith %}
                     </div>
                 </div>
+
                 {% if current_user.is_authenticated %}
                 <div class="col-12" style="margin: 0 0 0 10%">
                     <ul class="actions">
@@ -100,7 +102,7 @@
                                <li><a href="{{ url_for('home', page=page_num) }}" class="button special">{{ page_num }}</a></li>
                             {% endif %}
                         {% else %}
-                        <li><a href="#" class="button alt">...</a></li>
+                        <li><a href="#">...</a></li>
                         {% endif %}
                     {% endfor %}
                     </ul>
