@@ -1,90 +1,40 @@
-<!DOCTYPE HTML>
-<!--
-	Alpha by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Reset Request - Blog</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="../static/assets/css/main.css" />
-	</head>
-	<body class="is-preload">
-		<div id="page-wrapper">
-			<!-- Header -->
-			<header id="header">
-				<nav id="nav">
-					<ul>
-						<li><a href="{{ url_for('home') }}">Home</a></li>
-						<li>
-							<a href="{{ url_for('login') }}" class="icon solid">Log In</a>
-						</li>
-						<li><a href="{{ url_for('signup') }}" class="button">Sign Up</a></li>
-					</ul>
-				</nav>
-			</header>
+{% extends "layout2.html" %}
 
-			<!-- Main -->
-			<section id="main" class="container medium">
-				<header>
-					<h2>Reset Password</h2>
-				</header>
-				<div class="box">
-					<form method="post" action="">
-						{{ form.hidden_tag() }}
-						<div class="row gtr-50 gtr-uniform">
-							<div class="col-12 col-12-mobilep">
-								<div class="col-lg-8 col-md-10 mx-auto content">
-									<div>
-										{% with messages = get_flashed_messages(with_categories=true) %}
-											{% for category, message in messages %}
-												<div class="alert alert-{{ category }}">
-													{{ message }}
-												</div>
-											{% endfor %}
-										{% endwith %}
-									</div>
-								</div>
-							</div>
-							<div class="col-12 col-12-mobilep">
-								<p>{{ form.email.label }}</p>
-								{{ form.email }}
-							</div>
-							<div class="col-12" style="margin: 0 0 0 0">
-								<ul class="actions">
-									<li><a class="button special">{{ form.submit }}</a></li>
-								</ul>
+{% block title %}Reset Request{% endblock %}
+
+{% block main %}
+	<section id="main" class="container medium">
+		<header>
+			<h2>Reset Request</h2>
+		</header>
+		<div class="box">
+			<form method="post" action="">
+				{{ form.hidden_tag() }}
+				<div class="row gtr-50 gtr-uniform">
+					<div class="col-12 col-12-mobilep">
+						<div class="col-lg-8 col-md-10 mx-auto content">
+							<div>
+								{% with messages = get_flashed_messages(with_categories=true) %}
+									{% for category, message in messages %}
+										<div class="alert alert-{{ category }}">
+											{{ message }}
+										</div>
+									{% endfor %}
+								{% endwith %}
 							</div>
 						</div>
-					</form>
+					</div>
+					<div class="col-12 col-12-mobilep">
+						<p>{{ form.email.label }}</p>
+						{{ form.email }}
+					</div>
+					<div class="col-12" style="margin: 0 0 0 0">
+						<ul class="actions">
+							<li><a class="button special">{{ form.submit }}</a></li>
+						</ul>
+					</div>
 				</div>
-			</section>
-
-			<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-					<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-					<li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
-				</ul>
-				<ul class="copyright">
-					<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</footer>
+			</form>
 		</div>
-
-		<!-- Scripts -->
-		<script src="../static/assets/js/jquery.min.js"></script>
-		<script src="../static/assets/js/jquery.dropotron.min.js"></script>
-		<script src="../static/assets/js/jquery.scrollex.min.js"></script>
-		<script src="../static/assets/js/browser.min.js"></script>
-		<script src="../static/assets/js/breakpoints.min.js"></script>
-		<script src="../static/assets/js/util.js"></script>
-		<script src="../static/assets/js/main.js"></script>
-	</body>
-</html>
+	</section>
+{% endblock %}

@@ -1,128 +1,94 @@
-<!DOCTYPE HTML>
-<!--
-	Alpha by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Blog - Admin</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="../static/assets/css/main.css" />
-	</head>
-	<body class="landing is-preload">
-		<div id="page-wrapper">
-			<!-- Header -->
-			<header id="header" class="alt">
-				<nav style="top: 0.5em; left: 0.75em; right: auto;">
-					<ul>
-						<li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
-					</ul>
-				</nav>
-				<nav id="nav">
-					<ul>
-						<li><a href="{{ url_for('home') }}">Home</a></li>
-						<li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
-						<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
-					</ul>
-				</nav>
+{% extends "layout1.html" %}
+
+{% block title %}Admin{% endblock %}
+
+{% block header %}
+	<header id="header" class="alt">
+		<nav style="top: 0.5em; left: 0.75em; right: auto;">
+			<ul>
+				<li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
+			</ul>
+		</nav>
+		<nav id="nav">
+			<ul>
+				<li><a href="{{ url_for('home') }}">Home</a></li>
+				<li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
+				<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+			</ul>
+		</nav>
+	</header>
+{% endblock %}
+
+{% block banner %}
+	<section id="banner">
+		<h2><b style="color: white;">Admin's Blog</b></h2>
+	</section>
+{% endblock %}
+
+{% block main %}
+	<section class="container" id="bio">
+		<section class="box special">
+			<header class="major">
+				<h2>Introduction</h2>
 			</header>
+		</section>
 
-			<!-- Banner -->
-			<section id="banner">
-				<h2><b style="color: white;">Admin's Blog</b></h2>
-			</section>
-
-			<!-- Info of Admin -->
-			<section class="container" id="bio">
-				<section class="box special">
-					<header class="major">
-						<h2>Introduction</h2>
-					</header>
-				</section>
-				<div class="row">
-					<div class="col-6 col-6-narrower col-6-mobilep">
-						<img src="{{ current_user.avatar }}" width="40%" height="auto" style="position: relative; margin-left: 30%;">
-					</div>
-					<div class="col-6 col-6-narrower col-6-mobilep">
-						<ul>
-							<li><p><b>Name: </b> {{ current_user.username  }}</p></li>
-							<li><p><b>Email: </b> {{ current_user.email }}</p></li>
-							<li><p><b>Biography: </b> {{ current_user.bio }}</p></li>
-						</ul>
-					</div>
-				</div>
-				<hr>
-				<div class="col-12" style="margin: 0 0 0 16%">
-					<ul class="actions">
-						<li><a href="{{ url_for('update_account') }}" class="button special">Update Account</a></li>
-					</ul>
-				</div>
-				<hr>
-			</section>
-
-			<hr>
-
-			<!-- Main -->
-			<section id="main" class="container">
-				<section class="box special">
-					<header class="major">
-						<h2>All Posts</h2>
-					</header>
-				</section>
-				<!--Blog-->
-				<div style="margin: 0%">
-				  	<!-- Table -->
-					<section class="box">
-						<div class="table-wrapper">
-							<table>
-								<thead>
-									<tr>
-										<th>Title</th>
-										<th>Author</th>
-										<th>Delete</th>
-									</tr>
-								</thead>
-								<tbody>
-								{% for i in range(posts|length): %}
-									<tr>
-										<td><a href="{{ url_for('post', post_id=posts[i].id) }}">{{ posts[i].title }}</a></td>
-										<td>{{ authors[i].username }}</td>
-										<td><a href="{{ url_for('delete_post', post_id=posts[i].id) }}">✘</a></td>
-									</tr>
-								{% endfor %}
-								</tbody>
-							</table>
-						</div>
-					</section>
-				</div>
-				<hr>
-			</section>
-
-			<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-					<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-					<li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
+		<div class="row">
+			<div class="col-6 col-6-narrower col-6-mobilep">
+				<img src="{{ current_user.avatar }}" width="40%" height="auto" style="position: relative; margin-left: 30%;">
+			</div>
+			<div class="col-6 col-6-narrower col-6-mobilep">
+				<ul>
+					<li><p><b>Name: </b> {{ current_user.username  }}</p></li>
+					<li><p><b>Email: </b> {{ current_user.email }}</p></li>
+					<li><p><b>Biography: </b> {{ current_user.bio }}</p></li>
 				</ul>
-				<ul class="copyright">
-					<li>&copy; LCM.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</footer>
+			</div>
 		</div>
 
-		<!-- Scripts -->
-		<script src="../static/assets/js/jquery.min.js"></script>
-		<script src="../static/assets/js/jquery.dropotron.min.js"></script>
-		<script src="../static/assets/js/jquery.scrollex.min.js"></script>
-		<script src="../static/assets/js/browser.min.js"></script>
-		<script src="../static/assets/js/breakpoints.min.js"></script>
-		<script src="../static/assets/js/util.js"></script>
-		<script src="../static/assets/js/main.js"></script>
-	</body>
-</html>
+		<hr>
+
+		<div class="col-12" style="margin: 0 0 0 16%">
+			<ul class="actions">
+				<li><a href="{{ url_for('update_account') }}" class="button special">Update Account</a></li>
+			</ul>
+		</div>
+
+		<hr>
+	</section>
+
+	<hr>
+
+	<section id="main" class="container">
+		<section class="box special">
+			<header class="major">
+				<h2>All Posts</h2>
+			</header>
+		</section>
+
+		<div style="margin: 0%">
+			<section class="box">
+				<div class="table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>Title</th>
+								<th>Author</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for i in range(posts|length): %}
+							<tr>
+								<td><a href="{{ url_for('post', post_id=posts[i].id) }}">{{ posts[i].title }}</a></td>
+								<td>{{ authors[i].username }}</td>
+								<td><a href="{{ url_for('delete_post', post_id=posts[i].id) }}">✘</a></td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+	</section>
+{% endblock %}

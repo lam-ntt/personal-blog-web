@@ -1,101 +1,64 @@
-<!DOCTYPE HTML>
-<!--
-	Alpha by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Blog - Update Post</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="../static/assets/css/main.css" />
-	</head>
-	<body class="landing is-preload">
-		<div id="page-wrapper">
-			<!-- Header -->
-            <header id="header" class="alt">
-                <nav style="top: 0.5em; left: 0.75em; right: auto;">
-                    <ul>
-                        <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
-                    </ul>
-                </nav>
-                <nav id="nav">
-                    <ul>
-                        <li><a href="{{ url_for('home') }}">Home</a></li>
-                        {% if current_user.rank_id == 1: %}
-                        <li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
-                        {% else: %}
-                        <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
-                        {% endif %}
-                        <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
-                    </ul>
-                </nav>
-            </header>
+{% extends "layout1.html" %}
 
-			<!-- Banner -->
-            <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
-                <h2><b style="color: white;">Update Blog</b></h2>
+{% block title %}Update Post{% endblock %}
+
+{% block header %}
+    <header id="header" class="alt">
+        <nav style="top: 0.5em; left: 0.75em; right: auto;">
+            <ul>
+                <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
+            </ul>
+        </nav>
+        <nav id="nav">
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                {% if current_user.rank_id == 1: %}
+                     <li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
+                {% else: %}
+                    <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
+                {% endif %}
+                    <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+{% endblock %}
+
+{% block banner %}
+    <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
+        <h2><b style="color: white;">Update Blog</b></h2>
+    </section>
+{% endblock %}
+
+{% block main %}
+    <section id="main" class="container">
+        <section class="box special">
+            <section class="box">
+                <h3>Blog Form</h3>
+                <form method="post" action="{{ url_for('update_post', post_id=post.id) }}" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    <div class="row gtr-uniform gtr-50">
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.title.label }}</p>
+                            {{ form.title }}
+                        </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.image_cover.label }}</p>
+                            {{ form.image_cover }}
+                        </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.content.label }}</p>
+                            {{ form.content }}
+                            {{ ckeditor.load() }}
+                            {{ ckeditor.config(name='content') }}
+                        </div>
+                        <div class="col-12" style="margin: 0 0 0 0">
+                            <ul class="actions">
+                                <li><a class="button special">{{ form.submit }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
             </section>
-
-			<!-- Main -->
-            <section id="main" class="container">
-                <section class="box special">
-
-                    <!-- Form -->
-                    <section class="box">
-                        <h3>Blog Form</h3>
-                        <form method="post" action="{{ url_for('update_post', post_id=post.id) }}" enctype="multipart/form-data">
-                            {{ form.hidden_tag() }}
-                            <div class="row gtr-uniform gtr-50">
-                                <div class="col-12 col-12-mobilep">
-                                    <p>{{ form.title.label }}</p>
-                                    {{ form.title }}
-                                </div>
-                                <div class="col-12 col-12-mobilep">
-                                    <p>{{ form.image_cover.label }}</p>
-                                    {{ form.image_cover }}
-                                </div>
-                                <div class="col-12 col-12-mobilep">
-                                    <p>{{ form.content.label }}</p>
-                                    {{ form.content }}
-                                    {{ ckeditor.load() }}
-                                    {{ ckeditor.config(name='content') }}
-                                </div>
-                                <div class="col-12" style="margin: 0 0 0 0">
-									<ul class="actions">
-										<li><a class="button special">{{ form.submit }}</a></li>
-									</ul>
-								</div>
-                            </div>
-                        </form>
-                    </section>
-                </section>
-            </section>
-
-			<!-- Footer -->
-            <footer id="footer">
-                <ul class="icons">
-                    <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                    <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                    <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                    <li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-                    <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-                    <li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
-                </ul>
-                <ul class="copyright">
-                    <li>&copy; LCM.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-                </ul>
-            </footer>
-		</div>
-
-		<!-- Scripts -->
-        <script src="../static/assets/js/jquery.min.js"></script>
-        <script src="../static/assets/js/jquery.dropotron.min.js"></script>
-        <script src="../static/assets/js/jquery.scrollex.min.js"></script>
-        <script src="../static/assets/js/browser.min.js"></script>
-        <script src="../static/assets/js/breakpoints.min.js"></script>
-        <script src="../static/assets/js/util.js"></script>
-        <script src="../static/assets/js/main.js"></script>
-	</body>
-</html>
+        </section>
+    </section>
+{% endblock %}

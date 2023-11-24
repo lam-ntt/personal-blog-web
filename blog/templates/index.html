@@ -1,137 +1,100 @@
-<!DOCTYPE HTML>
-<!--
-	Alpha by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Blog</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="../static/assets/css/main.css" />
-	</head>
-	<body class="landing is-preload">
-		<div id="page-wrapper">
-			<!-- Header -->
-            <header id="header" class="alt">
+{% extends "layout1.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block header %}
+    <header id="header" class="alt">
+        {% if current_user.is_authenticated: %}
+            <nav style="top: 0.5em; left: 0.75em; right: auto;">
+                <ul>
+                    <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
+                </ul>
+            </nav>
+        {% endif %}
+
+        <nav id="nav">
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
                 {% if current_user.is_authenticated: %}
-                <nav style="top: 0.5em; left: 0.75em; right: auto;">
-                    <ul>
-                        <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
-                    </ul>
-                </nav>
+                    {% if current_user.rank_id == 1: %}
+                        <li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
+                    {% else: %}
+                        <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
+                    {% endif %}
+                        <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
                 {% endif %}
+            </ul>
+        </nav>
+    </header>
+{% endblock %}
 
-                <nav id="nav">
-                    <ul>
-                        <li><a href="{{ url_for('home') }}">Home</a></li>
-                        {% if current_user.is_authenticated: %}
-                            {% if current_user.rank_id == 1: %}
-                            <li><a href="{{ url_for('admin') }}" class="icon solid">Info</a></li>
-                            {% else: %}
-                            <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
-                            {% endif %}
-                            <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
-                        {% endif %}
-                    </ul>
-                </nav>
+{% block banner %}
+    <section id="banner">
+        <h2><b style="color: white;">Welcome to our Blog</b></h2>
+        <p><b style="color: white;">"Let's create something unique."</b></p>
+        {% if not current_user.is_authenticated: %}
+            <ul class="actions special">
+                <li><a href="{{ url_for('login') }}" class="button primary">Log In</a></li>
+                <li><a href="{{ url_for('signup') }}" class="button">Sign Up</a></li>
+            </ul>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block main %}
+    <section id="main" class="container">
+        <section class="box special">
+            <header class="major">
+                <h2>All Posts</h2>
             </header>
+        </section>
 
-			<!-- Banner -->
-            <section id="banner">
-                <h2><b style="color: white;">Welcome to our Blog</b></h2>
-                <p><b style="color: white;">"Let's create something unique."</b></p>
-                {% if not current_user.is_authenticated: %}
-                <ul class="actions special">
-                    <li><a href="{{ url_for('login') }}" class="button primary">Log In</a></li>
-                    <li><a href="{{ url_for('signup') }}" class="button">Sign Up</a></li>
-                </ul>
-                {% endif %}
-            </section>
-
-			<!-- Main -->
-            <section id="main" class="container">
-                <section class="box special">
-                    <header class="major">
-                        <h2>All Posts</h2>
-                    </header>
-                </section>
-
-                <!--Flash-->
-                <div class="text-center">
-                    <div>
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                            {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">
-                                {{ message }}
-                            </div>
-                            {% endfor %}
-                        {% endwith %}
-                    </div>
-                </div>
-
-                {% if current_user.is_authenticated %}
-                <div class="col-12" style="margin: 0 0 0 10%">
-                    <ul class="actions">
-                        <li><a href="{{ url_for('new_post') }}" class="button special">Create Post</a></li>
-                    </ul>
-                </div>
-                <hr>
-                {% endif %}
-
-                <!--Blog-->
-                {% for post in posts: %}
-                <div style="margin: 10%">
-                    <a href="{{ url_for('post', post_id=post.id) }}">
-                        <h2>{{ post.title }}</h2>
-                    </a>
-                    <i>Posted on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}</i>
-                </div>
-                {% endfor %}
-
-                <hr>
-
-                <div class="col-12" style="margin: 0 0 0 35%">
-                    <ul class="actions">
-                    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
-                        {% if page_num %}
-                            {% if posts.page == page_num %}
-                               <li><a href="{{ url_for('home', page=page_num) }}" class="button alt">{{ page_num }}</a></li>
-                            {% else %}
-                               <li><a href="{{ url_for('home', page=page_num) }}" class="button special">{{ page_num }}</a></li>
-                            {% endif %}
-                        {% else %}
-                        <li><a href="#" class="button alt">...</a></li>
-                        {% endif %}
+        <div class="text-center">
+            <div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
                     {% endfor %}
-                    </ul>
-                </div>
-            </section>
+                {% endwith %}
+            </div>
+        </div>
 
-			<!-- Footer -->
-            <footer id="footer">
-                <ul class="icons">
-                    <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                    <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                    <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                    <li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-                    <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-                    <li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
+        {% if current_user.is_authenticated %}
+            <div class="col-12" style="margin: 0 0 0 10%">
+                <ul class="actions">
+                    <li><a href="{{ url_for('new_post') }}" class="button special">Create Post</a></li>
                 </ul>
-                <ul class="copyright">
-                    <li>&copy; LCM.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-                </ul>
-            </footer>
-		</div>
+            </div>
+            <hr>
+        {% endif %}
 
-		<!-- Scripts -->
-        <script src="../static/assets/js/jquery.min.js"></script>
-        <script src="../static/assets/js/jquery.dropotron.min.js"></script>
-        <script src="../static/assets/js/jquery.scrollex.min.js"></script>
-        <script src="../static/assets/js/browser.min.js"></script>
-        <script src="../static/assets/js/breakpoints.min.js"></script>
-        <script src="../static/assets/js/util.js"></script>
-        <script src="../static/assets/js/main.js"></script>
-	</body>
-</html>
+        {% for post in posts: %}
+            <div style="margin: 10%">
+                <a href="{{ url_for('post', post_id=post.id) }}">
+                    <h2>{{ post.title }}</h2>
+                </a>
+                <i>Posted on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}</i>
+            </div>
+        {% endfor %}
+
+        <hr>
+
+        <div class="col-12" style="margin: 0 0 0 35%">
+            <ul class="actions">
+            {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
+                {% if page_num %}
+                    {% if posts.page == page_num %}
+                       <li><a href="{{ url_for('home', page=page_num) }}" class="button alt">{{ page_num }}</a></li>
+                    {% else %}
+                       <li><a href="{{ url_for('home', page=page_num) }}" class="button special">{{ page_num }}</a></li>
+                    {% endif %}
+                {% else %}
+                    <li><a href="#" class="button alt">...</a></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+    </section>
+{% endblock %}

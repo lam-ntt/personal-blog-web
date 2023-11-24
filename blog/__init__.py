@@ -6,7 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_mail import Mail
-
+import os
 
 app = Flask( __name__ )
 app.config["SECRET_KEY"] = "r$qAjWhNN{GXD?x/ncd1xYd/t"
@@ -26,8 +26,8 @@ login_manager.login_view = 'login'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'nguyenthithanhlam2017@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ecif ztdk lukn jaye'
+app.config['MAIL_USERNAME'] = os.environ.get("MAIL")
+app.config['MAIL_PASSWORD'] = os.environ.get("PASS")
 mail = Mail(app)
 
 from blog import route

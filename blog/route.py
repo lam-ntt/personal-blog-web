@@ -10,7 +10,6 @@ from blog.model import User, Post, State
 from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
 
 
-#Create admin-only decorator
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -24,10 +23,13 @@ def owner_only(f):
     def decorated_function(*args, **kwargs):
         post_id = request.args.get('post_id')
         author_state = State.query.filter_by(is_author=True, post_id=post_id).first()
+        if author_state == None: author_state = State.query.first()
         if current_user.id != author_state.user_id:
             return render_template('forbidden.html')
         return f(*args, **kwargs)
     return decorated_function
+
+
 
 def get_author(post):
     state = State.query.filter_by(is_author=True, post_id=post.id).first()
@@ -38,7 +40,6 @@ def get_author(post):
     if author==None: author=User.query.first() #just for window
     return author
 
-
 @app.route('/')
 @app.route('/home')
 def home():
@@ -46,16 +47,6 @@ def home():
     posts = Post.query.order_by(Post.date.desc()).paginate(page=page,
                                                            per_page=3)
     return render_template('index.html', posts=posts)
-
-@app.route('/admin')
-@login_required
-@admin_only
-def admin():
-    posts = Post.query.order_by(Post.date.desc()).all()
-    authors = []
-    for post in posts:
-        authors.append(get_author(post))
-    return render_template('admin_account.html', posts=posts, authors=authors)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -91,6 +82,47 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+
+
+def send_reset_mail(user):
+    token = user.get_reset_token()
+    msg = Message(sender='noreply@demo.com', recipients=[user.email])
+    msg.subject = 'Password Reset Request'
+    msg.body = f'''To reset your password, visit the following link: 
+{ url_for('reset_password', token=token, _external=True) } 
+
+If you did not make this request then simply ignore this email and no change will be made.
+'''
+    mail.connect()
+    mail.send(msg)
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    form = RequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_mail(user)
+        flash('An email has been sent with instructions to reset your password', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('This is an invalid or expired token!', 'danger')
+        return redirect(url_for('reset_request'))
+    form = ResetForm()
+    if form.validate_on_submit():
+        hash_password = bcrypt.generate_password_hash(form.password.data)
+        user.password = hash_password
+        db.session.commit()
+        flash('Your password has been updated. You are now able to login', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)
+
+
+
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -99,6 +131,16 @@ def save_picture(form_picture):
     form_picture.save(picture_path)
     picture_fn = '..\static\\' + picture_fn
     return picture_fn
+
+@app.route('/admin')
+@login_required
+@admin_only
+def admin():
+    posts = Post.query.order_by(Post.date.desc()).all()
+    authors = []
+    for post in posts:
+        authors.append(get_author(post))
+    return render_template('admin_account.html', posts=posts, authors=authors)
 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
@@ -110,7 +152,6 @@ def account():
     return render_template('account.html', posts=posts)
 
 @app.route('/account/update', methods=['GET', 'POST'])
-@owner_only
 @login_required
 def update_account():
     form = UpdateAccountForm(
@@ -130,23 +171,7 @@ def update_account():
         return redirect(url_for('account'))
     return render_template('update_account.html', form=form)
 
-@app.route('/post/new', methods=['GET', 'POST'])
-@login_required
-def new_post():
-    form = PostForm()
-    if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data,
-                    image_cover=form.image_cover.data)
-        db.session.add(post)
-        db.session.commit()
 
-        post = Post.query.order_by(Post.id.desc()).first()
-        state = State(is_author=True, user_id=current_user.id, post_id=post.id)
-        db.session.add(state)
-        db.session.commit()
-        flash('Your post has been created!', 'success')
-        return redirect(url_for('home'))
-    return render_template('new_post.html', form=form)
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 @login_required
@@ -176,9 +201,27 @@ def post(post_id):
                            commenter_state=commenter_state[::-1],
                            is_authen=is_authen)
 
-@app.route('/post/update', methods=['GET', 'POST'])
-@owner_only
+@app.route('/post/new', methods=['GET', 'POST'])
 @login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data,
+                    image_cover=form.image_cover.data)
+        db.session.add(post)
+        db.session.commit()
+
+        post = Post.query.order_by(Post.id.desc()).first()
+        state = State(is_author=True, user_id=current_user.id, post_id=post.id)
+        db.session.add(state)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('new_post.html', form=form)
+
+@app.route('/post/update', methods=['GET', 'POST'])
+@login_required
+@owner_only
 def update_post():
     post_id = request.args.get('post_id')
     post = Post.query.filter_by(id=post_id).first()
@@ -197,10 +240,9 @@ def update_post():
         return redirect(url_for('post', post_id=post.id))
     return render_template('update_post.html', post=post, form=form)
 
-
 @app.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
-@owner_only
 @login_required
+@owner_only
 def delete_post(post_id):
     post = Post.query.filter_by(id=post_id).first()
     states = State.query.filter_by(post_id=post.id)
@@ -210,43 +252,3 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('home'))
-
-def send_reset_mail(user):
-    token = user.get_reset_token()
-    msg = Message(sender='noreply@demo.com', recipients=[user.email])
-    msg.subject = 'Password Reset Request'
-    msg.body = f'''To reset your password, visit the following link: 
-{ url_for('reset_password', token=token, _external=True) } 
-
-If you did not make this request then simply ignore this email and no change will be made.
-'''
-    mail.connect()
-    mail.send(msg)
-
-@app.route('/reset_password', methods=['GET', 'POST'])
-def reset_request():
-    form = RequestForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        send_reset_mail(user)
-        flash('An email has been sent with instructions to reset your password', 'success')
-        return redirect(url_for('login'))
-    return render_template('reset_request.html', form=form)
-
-
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    user = User.verify_reset_token(token)
-    if user is None:
-        flash('This is an invalid or expired token!', 'danger')
-        return redirect(url_for('reset_request'))
-    form = ResetForm()
-    if form.validate_on_submit():
-        hash_password = bcrypt.generate_password_hash(form.password.data)
-        user.password = hash_password
-        db.session.commit()
-        flash('Your password has been updated. You are now able to login', 'success')
-        return redirect(url_for('login'))
-    return render_template('reset_password.html', form=form)
-
-
