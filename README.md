@@ -1,15 +1,11 @@
-# Personal Blog Web
-
-***Python Project, Group 01***
-<br>
-***<a href="https://projectblogweb-python.onrender.com">Link to this project</a>***
+# Python Project
 
 ## 1. Database
 <img alt="database" src="images_in_README/database.png"/>
 
-## 2. Use Case
+## 2. Usecase
 <img alt="usercase" src=""/>
 
-## 3. Signup Page
+## 3. Overview
 <img alt="signup" src=""/>
 

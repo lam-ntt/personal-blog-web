@@ -24,9 +24,9 @@
 {% endblock %}
 
 {% block banner %}
-    <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
-        <h2><b style="color: white;">Update Post</b></h2>
-    </section>
+    <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('{{ post.image_cover }}');">
+		<h2><b style="color: white;">Update Post</b></h2>
+	</section>
 {% endblock %}
 
 {% block main %}
