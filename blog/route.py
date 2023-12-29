@@ -10,7 +10,6 @@ from blog.model import User, Post, State
 from blog.form import (SignupForm, LoginForm, UpdateAccountForm, PostForm,
                        CommentForm, RequestForm, ResetForm)
 
-
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -29,7 +28,6 @@ def owner_only(f):
             return render_template('forbidden.html')
         return f(*args, **kwargs)
     return decorated_function
-
 
 
 @app.route('/')
@@ -77,7 +75,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-
 def send_reset_mail(user):
     token = user.get_reset_token()
     msg = Message(sender='noreply@demo.com', recipients=[user.email])
@@ -116,7 +113,6 @@ def reset_password(token):
     return render_template('reset_password.html', form=form)
 
 
-
 def get_author(post):
     state = State.query.filter_by(is_author=True, post_id=post.id).first()
     if state!=None:
@@ -146,6 +142,7 @@ def admin():
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
+    image_cover = 0
     posts_state = State.query.filter_by(is_author=True, user_id=current_user.id)
     posts = []
     for state in posts_state:
@@ -164,13 +161,10 @@ def update_account():
         current_user.bio = form.bio.data
         if form.avatar.data:
             current_user.avatar = save_picture(form.avatar.data)
-        if form.image_cover.data:
-            current_user.image_cover = form.image_cover.data
         db.session.commit()
         flash('Your account info has been updated!', 'success')
         return redirect(url_for('account'))
     return render_template('update_account.html', form=form)
-
 
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])

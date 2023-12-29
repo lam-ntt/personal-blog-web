@@ -1,15 +1,12 @@
 from datetime import datetime
 from itsdangerous import URLSafeSerializer as Serializer
 
-
 from blog import db, login_manager, app
 from flask_login import UserMixin
-
 
 @login_manager.user_loader
 def load_user(user_id):
      return User.query.get(int(user_id))
-
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -38,8 +35,6 @@ class User(db.Model, UserMixin):
           return None
         return User.query.get(user_id)
 
-
-
 class State(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     is_author = db.Column(db.Boolean, nullable=False)
@@ -49,7 +44,6 @@ class State(db.Model):
 
     def __repr__(self):
         return (f"State('{self.is_author}', '{self.user_id}', '{self.post_id}')")
-
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

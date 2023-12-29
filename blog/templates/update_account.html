@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block banner %}
-    <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'), url('{{ current_user.image_cover }}');">
+    <section id="banner">
 		<h2><b style="color: white;">Update Info</b></h2>
 	</section>
 {% endblock %}
@@ -50,10 +50,6 @@
                         </div>
                         <div class="col-6 col-6-mobilep">
                             <p>{{ form.avatar }}</p>
-                        </div>
-                        <div class="col-12 col-12-mobilep">
-                            <p>{{ form.image_cover.label }}</p>
-                            {{ form.image_cover }}
                         </div>
                         <div class="col-12" style="margin: 0 0 0 0">
                             <ul class="actions">

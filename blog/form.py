@@ -7,7 +7,6 @@ from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationE
 from flask_login import current_user
 from blog.model import User
 
-
 class SignupForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Username', validators=[DataRequired()])
@@ -20,18 +19,15 @@ class SignupForm(FlaskForm):
         if user:
             raise ValidationError('This email is taken. Please choose a difference one.')
 
-
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     bio = StringField('Biography')
     avatar = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
-    image_cover = StringField('Cover Picture')
     submit = SubmitField('Update')
 
     def validate_email(self, email):
