@@ -15,54 +15,54 @@
 
 {% block banner %}
     <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('../static/images/banner.png');">
-        <h2><b style="color: white;">Register</b></h2>
-        <h2><b style="color: white;">Start Contributing to the Blog!</b></h2>
+        <h2><b style="color: white;">Sign Up</b></h2>
     </section>
 {% endblock %}
 
 {% block main %}
     <section id="main" class="container">
-        <section class="box special">
-            <section class="box">
-                <h3>Register Form</h3>
+        <div class="box special">
+<!--        Show mesages-->
+            <div class="col-lg-8 col-md-10 mx-auto content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+            </div>
+
+<!--            Show form-->
+            <div class="box">
                 <form method="post" action="{{ url_for('signup') }}">
                     {{ form.hidden_tag() }}
                     <div class="row gtr-uniform gtr-50">
-                    <div class="col-12 col-12-mobilep">
-                        <div class="col-lg-8 col-md-10 mx-auto content">
-                            <div>
-                                {% with messages = get_flashed_messages(with_categories=true) %}
-                                    {% for category, message in messages %}
-                                        <div class="alert alert-{{ category }}">
-                                            {{ message }}
-                                        </div>
-                                    {% endfor %}
-                                {% endwith %}
-                            </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.email.label }}</p>
+                            {{ form.email }}
                         </div>
-                        <p>{{ form.email.label }}</p>
-                        {{ form.email }}
-                    </div>
-                    <div class="col-12 col-12-mobilep">
-                        <p>{{ form.username.label }}</p>
-                        {{ form.username }}
-                    </div>
-                    <div class="col-12 col-12-mobilep">
-                        <p>{{ form.password.label }}</p>
-                        {{ form.password }}
-                    </div>
-                    <div class="col-12 col-12-mobilep">
-                        <p>{{ form.confirm_password.label }}</p>
-                        {{ form.confirm_password }}
-                    </div>
-                    <div class="col-12" style="margin: 0 0 0 0">
-                        <ul class="actions">
-                            <li><a class="button special">{{ form.submit }}</a></li>
-                        </ul>
-                    </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.username.label }}</p>
+                            {{ form.username }}
+                        </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.password.label }}</p>
+                            {{ form.password }}
+                        </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.confirm_password.label }}</p>
+                            {{ form.confirm_password }}
+                        </div>
+                        <div class="col-12" style="margin: 0 0 0 0">
+                            <ul class="actions">
+                                <li><a class="button special">{{ form.submit }}</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </form>
-            </section>
-        </section>
+            </div>
+
+        </div>
     </section>
 {% endblock %}

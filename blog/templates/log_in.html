@@ -16,31 +16,28 @@
 {% block banner %}
 	<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/2465877/pexels-photo-2465877.jpeg?auto=compress&cs=tinysrgb&w=1300');">
 		<h2><b style="color: white;">Log In</b></h2>
-		<h2><b style="color: black;">Welcome Back!</b></h2>
 	</section>
 {% endblock %}
 
 {% block main %}
 	<section id="main" class="container">
-		<section class="box special">
-			<section class="box">
-				<h3>Log in Form</h3>
+		<div class="box special">
+<!--		Show messages-->
+			<div class="col-lg-8 col-md-10 mx-auto content">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+				{% for category, message in messages %}
+					<div class="alert alert-{{ category }}">
+						{{ message }}
+					</div>
+				{% endfor %}
+			{% endwith %}
+			</div>
+
+<!--		Show form-->
+			<div class="box">
 				<form method="post" action="{{ url_for('login') }}">
 					{{ form.hidden_tag() }}
 					<div class="row gtr-uniform gtr-50">
-						<div class="col-12 col-12-mobilep">
-							<div class="col-lg-8 col-md-10 mx-auto content">
-								<div>
-								{% with messages = get_flashed_messages(with_categories=true) %}
-									{% for category, message in messages %}
-										<div class="alert alert-{{ category }}">
-											{{ message }}
-										</div>
-									{% endfor %}
-								{% endwith %}
-								</div>
-							</div>
-						</div>
 						<div class="col-12 col-12-mobilep">
 							<p>{{ form.email.label }}</p>
 							{{ form.email }}
@@ -57,7 +54,8 @@
 						</div>
 					</div>
 				</form>
-			</section>
-		</section>
+			</div>
+
+		</div>
 	</section>
 {% endblock %}

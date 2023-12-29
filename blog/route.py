@@ -1,13 +1,14 @@
-import os, secrets # image processing
+import os, secrets
 
-from flask import render_template, redirect, url_for, request, flash, abort
+from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_mail import Message
 from functools import wraps
 
 from blog import app, db, bcrypt, mail
 from blog.model import User, Post, State
-from blog.form import SignupForm, LoginForm, UpdateAccountForm, PostForm, CommentForm, RequestForm, ResetForm
+from blog.form import (SignupForm, LoginForm, UpdateAccountForm, PostForm,
+                       CommentForm, RequestForm, ResetForm)
 
 
 def admin_only(f):
@@ -23,22 +24,13 @@ def owner_only(f):
     def decorated_function(*args, **kwargs):
         post_id = request.args.get('post_id')
         author_state = State.query.filter_by(is_author=True, post_id=post_id).first()
-        if author_state == None: author_state = State.query.first()
-        if current_user.id != author_state.user_id:
+
+        if author_state == None or current_user.id != author_state.user_id:
             return render_template('forbidden.html')
         return f(*args, **kwargs)
     return decorated_function
 
 
-
-def get_author(post):
-    state = State.query.filter_by(is_author=True, post_id=post.id).first()
-    if state==None: #just for window
-        author = User.query.filter_by(id=1).first()
-    else:
-        author = User.query.filter_by(id=state.user_id).first()
-    if author==None: author=User.query.first() #just for window
-    return author
 
 @app.route('/')
 @app.route('/home')
@@ -53,7 +45,9 @@ def signup():
     form = SignupForm()
     if form.validate_on_submit():
         hash_password = bcrypt.generate_password_hash(form.password.data)
-        user = User(email=form.email.data, username=form.username.data, password=hash_password)
+        user = User(email=form.email.data,
+                    username=form.username.data,
+                    password=hash_password)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created. You are now able to login.',
@@ -61,7 +55,7 @@ def signup():
         return redirect(url_for('login'))
     else:
         if form.is_submitted():
-            flash('Your mail or username is invalid!', 'danger')
+            flash('Your mail is invalid!', 'danger')
     return render_template('sign_up.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -83,6 +77,15 @@ def logout():
     return redirect(url_for('home'))
 
 
+
+def get_author(post):
+    state = State.query.filter_by(is_author=True, post_id=post.id).first()
+    if state==None:
+        author = User.query.filter_by(id=1).first()
+    else:
+        author = User.query.filter_by(id=state.user_id).first()
+        if author==None: author=User.query.first()
+    return author
 
 def send_reset_mail(user):
     token = user.get_reset_token()

@@ -3,16 +3,16 @@
 {% block title %}Home{% endblock %}
 
 {% block header %}
-    <header id="header" class="alt">
-        {% if current_user.is_authenticated: %}
-            <nav style="top: 0.5em; left: 0.75em; right: auto;">
-                <ul>
-                    <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
-                </ul>
-            </nav>
-        {% endif %}
+    <section id="header" class="alt">
+    {% if current_user.is_authenticated: %}
+        <nav style="top: 0.5em; left: 0.75em; right: auto;">
+            <ul>
+                <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
+            </ul>
+        </nav>
+    {% endif %}
 
-        <nav id="nav">
+        <nav>
             <ul>
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 {% if current_user.is_authenticated: %}
@@ -21,17 +21,18 @@
                     {% else: %}
                         <li><a href="{{ url_for('account') }}" class="icon solid">Info</a></li>
                     {% endif %}
-                        <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
+                    <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
                 {% endif %}
+
             </ul>
         </nav>
-    </header>
+    </section>
 {% endblock %}
 
 {% block banner %}
     <section id="banner">
         <h2><b style="color: white;">Welcome to our Blog</b></h2>
-        <p><b style="color: white;">"Let's create something unique."</b></p>
+        <p><b style="color: white;">"Let's create something unique"</b></p>
         {% if not current_user.is_authenticated: %}
             <ul class="actions special">
                 <li><a href="{{ url_for('login') }}" class="button primary">Log In</a></li>
@@ -43,44 +44,46 @@
 
 {% block main %}
     <section id="main" class="container">
-        <section class="box special">
+<!--        Show tag-->
+        <div class="box special">
             <header class="major">
-                <h2>All Posts</h2>
+                <h2>Posts</h2>
             </header>
-        </section>
-
-        <div class="text-center">
-            <div>
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endwith %}
-            </div>
         </div>
 
+<!--        Show messages-->
+        <div class="text-center">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+        </div>
+
+<!--        Show button to create post-->
         {% if current_user.is_authenticated %}
-            <div class="col-12" style="margin: 0 0 0 10%">
-                <ul class="actions">
-                    <li><a href="{{ url_for('new_post') }}" class="button special">Create Post</a></li>
-                </ul>
-            </div>
-            <hr>
+        <div class="col-12" style="margin: 0 0 0 10%">
+            <ul class="actions">
+                <li><a href="{{ url_for('new_post') }}" class="button special">Create Post</a></li>
+            </ul>
+        </div>
         {% endif %}
 
+        <hr>
+
+<!--        Show posts-->
         {% for post in posts: %}
             <div style="margin: 10%">
-                <a href="{{ url_for('post', post_id=post.id) }}">
-                    <h2>{{ post.title }}</h2>
-                </a>
+                <a href="{{ url_for('post', post_id=post.id) }}"><h2>{{ post.title }}</h2></a>
                 <i>Posted on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}</i>
             </div>
         {% endfor %}
 
         <hr>
 
+<!--        Show button to change page-->
         <div class="col-12" style="margin: 0 0 0 35%">
             <ul class="actions">
             {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
@@ -96,5 +99,6 @@
             {% endfor %}
             </ul>
         </div>
+
     </section>
 {% endblock %}
