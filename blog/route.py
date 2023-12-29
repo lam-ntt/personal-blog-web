@@ -78,15 +78,6 @@ def logout():
 
 
 
-def get_author(post):
-    state = State.query.filter_by(is_author=True, post_id=post.id).first()
-    if state==None:
-        author = User.query.filter_by(id=1).first()
-    else:
-        author = User.query.filter_by(id=state.user_id).first()
-        if author==None: author=User.query.first()
-    return author
-
 def send_reset_mail(user):
     token = user.get_reset_token()
     msg = Message(sender='noreply@demo.com', recipients=[user.email])
@@ -126,6 +117,13 @@ def reset_password(token):
 
 
 
+def get_author(post):
+    state = State.query.filter_by(is_author=True, post_id=post.id).first()
+    if state!=None:
+        author = User.query.filter_by(id=state.user_id).first()
+        return author
+    return None
+
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -159,7 +157,6 @@ def account():
 def update_account():
     form = UpdateAccountForm(
         username=current_user.username,
-        bio=current_user.bio,
         image_cover=current_user.image_cover
     )
     if form.validate_on_submit():

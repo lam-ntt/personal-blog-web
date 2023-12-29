@@ -3,7 +3,7 @@
 {% block title %}Admin{% endblock %}
 
 {% block header %}
-	<header id="header" class="alt">
+	<section id="header" class="alt">
 		<nav style="top: 0.5em; left: 0.75em; right: auto;">
 			<ul>
 				<li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
@@ -16,23 +16,25 @@
 				<li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
 			</ul>
 		</nav>
-	</header>
+	</section>
 {% endblock %}
 
 {% block banner %}
 	<section id="banner">
-		<h2><b style="color: white;">Admin's Blog</b></h2>
+		<h2><b style="color: white;">Admin</b></h2>
 	</section>
 {% endblock %}
 
 {% block main %}
-	<section class="container" id="bio">
-		<section class="box special">
+	<section id="main" class="container">
+<!--	Show tag-->
+		<div class="box special">
 			<header class="major">
 				<h2>Introduction</h2>
 			</header>
-		</section>
+		</div>
 
+<!--	Show info-->
 		<div class="row">
 			<div class="col-6 col-6-narrower col-6-mobilep">
 				<img src="{{ current_user.avatar }}" width="40%" height="auto" style="position: relative; margin-left: 30%;">
@@ -48,6 +50,7 @@
 
 		<hr>
 
+<!--	Show button to update account-->
 		<div class="col-12" style="margin: 0 0 0 16%">
 			<ul class="actions">
 				<li><a href="{{ url_for('update_account') }}" class="button special">Update Account</a></li>
@@ -55,19 +58,17 @@
 		</div>
 
 		<hr>
-	</section>
 
-	<hr>
-
-	<section id="main" class="container">
-		<section class="box special">
+<!--	Show tag-->
+		<div class="box special">
 			<header class="major">
-				<h2>All Posts</h2>
+				<h2>Posts</h2>
 			</header>
-		</section>
+		</div>
 
+<!--	Show table-->
 		<div style="margin: 0%">
-			<section class="box">
+			<div class="box">
 				<div class="table-wrapper">
 					<table>
 						<thead>
@@ -77,6 +78,7 @@
 								<th>Delete</th>
 							</tr>
 						</thead>
+
 						<tbody>
 						{% for i in range(posts|length): %}
 							<tr>
@@ -88,7 +90,8 @@
 						</tbody>
 					</table>
 				</div>
-			</section>
+			</div>
 		</div>
+
 	</section>
 {% endblock %}

@@ -3,13 +3,12 @@
 {% block title %}Update Info{% endblock %}
 
 {% block header %}
-    <header id="header" class="alt">
+    <section id="header" class="alt">
         <nav style="top: 0.5em; left: 0.75em; right: auto;">
             <ul>
                 <li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
             </ul>
         </nav>
-
         <nav id="nav">
             <ul>
                 <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -21,49 +20,49 @@
                     <li><a href="{{ url_for('logout') }}" class="button">Log Out</a></li>
             </ul>
         </nav>
-    </header>
+    </section>
 {% endblock %}
 
 {% block banner %}
-    <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('../static/images/banner.png');">
-        <h2><b style="color: white;">Update Biograph</b></h2>
-    </section>
+    <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'), url('{{ current_user.image_cover }}');">
+		<h2><b style="color: white;">Update Info</b></h2>
+	</section>
 {% endblock %}
 
 {% block main %}
-    <section id="main" class="container">
-        <section class="box special">
-            <section class="box">
-                <h3>Update Form</h3>
-                <form method="post" action="#" enctype="multipart/form-data">
+<!--Show form-->
+    <div id="main" class="container">
+        <div class="box special">
+            <div class="box">
+                <form method="post" action="" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
                     <div class="row gtr-uniform gtr-50">
-                    <div class="col-12 col-12-mobilep">
-                        <p>{{ form.username.label }}</p>
-                        {{ form.username }}
-                    </div>
-                    <div class="col-12 col-12-mobilep">
-                        <p>{{ form.bio.label }}</p>
-                        {{ form.bio }}
-                    </div>
-                    <div class="col-6 col-6-mobilep">
-                        <p>{{ form.avatar.label }}</p>
-                    </div>
-                    <div class="col-6 col-6-mobilep">
-                        <p>{{ form.avatar }}</p>
-                    </div>
-                    <div class="col-12 col-12-mobilep">
-                        <p>{{ form.image_cover.label }}</p>
-                        {{ form.image_cover }}
-                    </div>
-                    <div class="col-12" style="margin: 0 0 0 0">
-                        <ul class="actions">
-                            <li><a class="button special">{{ form.submit }}</a></li>
-                        </ul>
-                    </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.username.label }}</p>
+                            {{ form.username }}
+                        </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.bio.label }}</p>
+                            {{ form.bio }}
+                        </div>
+                        <div class="col-6 col-6-mobilep">
+                            <p>{{ form.avatar.label }}</p>
+                        </div>
+                        <div class="col-6 col-6-mobilep">
+                            <p>{{ form.avatar }}</p>
+                        </div>
+                        <div class="col-12 col-12-mobilep">
+                            <p>{{ form.image_cover.label }}</p>
+                            {{ form.image_cover }}
+                        </div>
+                        <div class="col-12" style="margin: 0 0 0 0">
+                            <ul class="actions">
+                                <li><a class="button special">{{ form.submit }}</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </form>
-            </section>
-        </section>
-    </section>
+            </div>
+        </div>
+    </div>
 {% endblock %}

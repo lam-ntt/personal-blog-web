@@ -9,7 +9,6 @@
 				<li><a><img src="{{ current_user.avatar }}" class="avatar"></a></li>
 			</ul>
 		</nav>
-
 		<nav id="nav">
 			<ul>
 				<li><a href="{{ url_for('home') }}">Home</a></li>
@@ -28,50 +27,34 @@
 	<section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('{{ post.image_cover }}');">
 		<h2><b style="color: white;">{{ post.title }}</b></h2>
 		<p>
-		  <i>Posted by
-		  <a href="#">{{ author.username }}</a> on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}
-		  </i>
+		  <i>Posted by <a href="#">{{ author.username }}</a> on {{ post.date.strftime("%d/%m/%Y %H:%M:%S") }}</i>
 		</p>
 	</section>
 {% endblock %}
 
 {% block main %}
 	<section id="main" class="container">
-		<section class="box special">
-			<header class="major">
-				<h2>{{ post.title }}</h2>
-			</header>
-		</section>
-
-		<div class="text-center">
-			<div>
-			{% with messages = get_flashed_messages(with_categories=true) %}
-				{% for category, message in messages %}
-					<div class="alert alert-{{ category }}">
-						{{ message }}
-					</div>
-				{% endfor %}
-			{% endwith %}
-			</div>
+<!--	Show content-->
+		<div class="box special">
+			  <p>{{ post.content|safe }}</p>
 		</div>
 
-		<div style="margin: 0% 10% 0% 10%">
-		  <p>{{ post.content|safe }}</p>
-		</div>
-		<hr>
+<!--	Show info of post-->
 		{% if is_authen %}
 		<div class="col-12" style="margin: 0 0 0 10%">
 			<ul class="actions">
 				<li><a href="{{ url_for('update_post', post_id=post.id) }}" class="button special">Update Post</a></li>
 			</ul>
 		</div>
-		</hr>
 		{% endif %}
 
+		<hr>
+
+<!--	Show comment form-->
 		{% if current_user.is_authenticated %}
 		<div style="margin: 0% 10% 0% 10%">
 			<h3>Comment</h3>
-			<form method="post" action="{{ url_for('post', post_id=post.id) }}">
+			<form method="post" action="">
 				{{ form.hidden_tag() }}
 				<div class="row gtr-uniform gtr-50">
 					<div class="col-12 col-12-mobilep">
@@ -83,29 +66,30 @@
 				</div>
 			</form>
 		</div>
-		<hr>
 		{% endif %}
 
+		<hr>
+
+<!--	Show comments-->
 		<div class="container text-left row-gap-3">
-			<div>
-				{% for i in range(commenter| length): %}
-				<div class="row">
-					<div class="col-2">
-						<img src="{{ commenter[i].avatar }}" class="avatar" align="right">
-					</div>
-					<div class="col-8">
-						<h3>{{ commenter[i].username }}</h3>
-					</div>
+		{% for i in range(commenter| length): %}
+			<div class="row">
+				<div class="col-2">
+					<img src="{{ commenter[i].avatar }}" class="avatar" align="right">
 				</div>
-				<div class="row">
-					<div class="col-2">
-					</div>
-					<div class="col-8">
-						<p>{{ commenter_state[i].comment }}</p>
-					</div>
+				<div class="col-8">
+					<h4>{{ commenter[i].username }}</h4>
 				</div>
-				{% endfor %}
 			</div>
+			<div class="row">
+				<div class="col-2">
+				</div>
+				<div class="col-8">
+					<p>{{ commenter_state[i].comment }}</p>
+				</div>
+			</div>
+		{% endfor %}
 		</div>
+
 	</section>
 {% endblock %}

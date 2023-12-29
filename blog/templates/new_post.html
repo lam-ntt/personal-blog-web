@@ -25,17 +25,16 @@
 
 {% block banner %}
     <section id="banner" style="background-image: url('../static/assets/css/images/overlay.png'),url('https://images.pexels.com/photos/1002655/pexels-photo-1002655.jpeg?auto=compress&cs=tinysrgb&w=1500');">
-        <h2><b style="color: white;">Create Blog</b></h2>
+        <h2><b style="color: white;">Create Post</b></h2>
     </section>
 {% endblock %}
 
 {% block main %}
     <section id="main" class="container">
-        <section class="box special">
-            <!-- Form -->
-            <section class="box">
-                <h3>Blog Form</h3>
-                <form method="post" action="{{ url_for('new_post') }}" enctype="multipart/form-data">
+        <div class="box special">
+<!--        Show form-->
+            <div class="box">
+                <form method="post" action="" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
                     <div class="row gtr-uniform gtr-50">
                         <div class="col-12 col-12-mobilep">
@@ -59,7 +58,8 @@
                         </div>
                     </div>
                 </form>
-            </section>
-        </section>
+            </div>
+
+        </div>
     </section>
 {% endblock %}

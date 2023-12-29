@@ -44,14 +44,14 @@
 
 {% block main %}
     <section id="main" class="container">
-<!--        Show tag-->
+<!--    Show tag-->
         <div class="box special">
             <header class="major">
                 <h2>Posts</h2>
             </header>
         </div>
 
-<!--        Show messages-->
+<!--    Show messages-->
         <div class="text-center">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
@@ -62,7 +62,7 @@
         {% endwith %}
         </div>
 
-<!--        Show button to create post-->
+<!--    Show button to create post-->
         {% if current_user.is_authenticated %}
         <div class="col-12" style="margin: 0 0 0 10%">
             <ul class="actions">
@@ -73,7 +73,7 @@
 
         <hr>
 
-<!--        Show posts-->
+<!--    Show posts-->
         {% for post in posts: %}
             <div style="margin: 10%">
                 <a href="{{ url_for('post', post_id=post.id) }}"><h2>{{ post.title }}</h2></a>
@@ -83,8 +83,8 @@
 
         <hr>
 
-<!--        Show button to change page-->
-        <div class="col-12" style="margin: 0 0 0 35%">
+<!--    Show button to change page-->
+        <div style="margin: 0 0 0 30%">
             <ul class="actions">
             {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
                 {% if page_num %}
